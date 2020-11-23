@@ -2,7 +2,7 @@
 #include <stdio.h> //thư viện studio.h định nghĩa hàm printf và scanf
 int main()
 {
-    //2 biến số nguyên a, b
+    //2 biến số nguyên a, b để nhập
     int a, b;
 
     //In xâu ký tự ra màn hình

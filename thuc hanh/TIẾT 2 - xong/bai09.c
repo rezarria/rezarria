@@ -2,25 +2,28 @@
 #include <conio.h>
 int main()
 {
+	// Biến số nguyên n dùng để khởi tạo số hàng của mảng
+	// Biến số nguyên m dùng để khởi tạo số cột của mảng
 	int n, m;
 	printf("Nhap n va m :");
-	scanf("%d%d", &a, &b);
-	const int A = a, B = b;
-	int arr[A][B];
+	scanf("%d%d", &n, &m);
+	// Khởi tạo biến mảng arr với số n hàng và m cột
+	int arr[n][m];
+	// Khởi tạo biến số nguyên t với giá trị khởi đầu là 0 để dùng tính tổng các giá trị nguyên dương có trong mảng
 	int t = 0;
-	for(a = 0; a < A; a++)
-		for(b = 0; b < B; b++)
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
 		{
-		printf("Phan tu %3d cua hang %3d = ", b, a);
-		scanf("%d", &arr[a][b]);
-		if((arr[a][b] % 2 == 0) && (arr[a][b] > 0))
-			t += arr[a][b];
+			printf("Phan tu %3d cua hang %3d = ", j, i);
+			scanf("%d", &arr[i][j]);
+			if ((arr[i][j] % 2 == 0) && (arr[i][j] > 0))
+				t += arr[i][j];
 		}
-	for(a = 0; a < A; a++)
+	for (int i = 0; i < n; i++)
 	{
-		for(b = 0; b < B; b++)
-			printf("%3d\t");
+		for (int j = 0; j < m; j++)
+			printf("%3d\t", arr[i][j]);
 		putchar('\0');
 	}
 	return 0;
-}	
+}

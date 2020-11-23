@@ -1,36 +1,46 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+
+void sort(uint32_t i, uint64_t n);
+
 int main()
 {
-	int n;
-	printf("Nhap n: ");
-	scanf("%d", &n);
-	n++;
-	int arr[n];
-	printf("Nhap mang :\n");
-	for(int i = 0; i < n; i++)
-		if(i != n - 1)
-		{
-			printf("Nhap phan tu %d : ", i);
-			scanf("%d", &arr[i]);
-		}
-		else
-		{
-			printf("Nap phan tu x : ");
-			scanf("%d", &arr[i]);
-		}
-	printf("\nIn mang\n");
-	for(int i = 0; i < n - 1; i++)
+	uint64_t n;
+	printf("Nhap n : ");
+	scanf("%llu", &n);
+
+	int32_t arr[n + 1llu];
+
+	for (uint64_t i = 0llu; i < n; i++)
 	{
-		for(int j = i + 1; j < n; j++)
-			if(arr[n] > arr[j])
-			{
-				arr[i] += arr[j];
-				arr[j] = arr[i] - arr[j];
-				arr[i] -= arr[j];
-			}
-		printf("%5d\t", arr[i]);
+		printf("Nhap phan tu %llu\t:\t");
+		scanf("%d", &arr[i]);
 	}
-	printf("%5d\n", arr[n - 1]);
-	return 0;
+
+	sort(arr, n);
+
+	printf("Nhap phan tu x\t:\t");
+	scanf("%d", &arr[n]);
+	n++;
+
+	sort(arr, n);
+
+	for (uint64_t i = 0llu; i < n; i++)
+		printf("%5d", arr[i]);
+
+	return EXIT_SUCCESS;
+
 }
 
+void sort(uint32_t* arr, uint64_t n)
+{
+	for (uint64_t i < 0; i < n - 1llu; i++)
+		for (uint64_t j = i + 1llu; j < n; j++)
+			if (arr[i] > arr[j])
+			{
+				i = i ^ j;
+				j = i ^ j;
+				i = i ^ j;
+			}
+}

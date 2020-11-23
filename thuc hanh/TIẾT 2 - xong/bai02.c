@@ -1,31 +1,26 @@
+/*
+	Chương trình này dùng để xem các giá trị của các phần tử trong biến mảng số nguyên a.
+	Và đồng thời xem địa chỉ của phần tử trong biến mảng số nguyên a.
+*/
+
 #include <stdio.h>
 #include <conio.h>
+
 int main()
 {
-	int a[] = {1, -2, 0, 4, -5, 3, 7};
-	/*
-		biến a chính là biến mảng, có 7 phần tử
-		Cú pháp
-		<kiểu_biến> <tên_biến>[<số_phần_tử>];
-	*/
-	printf("\nXem cac phan tu cua mang:\n");
-	printf("%5d", a[0]);
-	printf("%5d", a[1]);
-	printf("%5d", a[2]);
-	printf("%5d", a[3]);
-	printf("%5d", a[4]);
-	/*
-		Kiểu hiển thị này không phù hợp với mảng có nhiều phần tử
-		Với kiểu này thì số phần tử sẽ bằng số lần nhập lại hàm printf, vậy rất mất thời gian và bất tiện
-	*/
-	printf("\n-------------------------------------\n");
+	// Khởi tạo bến mảng số nguyên a với số phần tử không biết trước mà theo dãy giá trị khởi tạo ban đầu
+	int a[] = { 1, -2, 0, 4, -5, 3, 7 };
+	// Biến số nguyên i dùng cho vòng lặp
+	// Biến số nguyên n dùng để tính số phần tử trong biến mảng số nguyên a
 	int i, n;
+	// Để tính số phần tử của biến mảng số nguyên a thì ta lấy kích thước của biến a chia với kích thức của phần tử
 	n = sizeof(a) / sizeof(int);
+	// Hiện thị từng giá trị của biến mảng số nguyên a
 	for (i = 0; i < n; i++)
 		printf("%5d", a[i]);
+	// Hiện thị từng địa chỉ của các phần tử của biến mảng số nguyên a bằng cách thêm '&' trước biến
 	for (i = 0; i < n; i++)
 		printf("\n%u", &a[i]);
-	//Với vòng lặp for, ta chir cần khai báo printf một lần là đủ
 	getch();
 	return 0;
 }
