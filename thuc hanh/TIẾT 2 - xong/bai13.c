@@ -18,7 +18,7 @@ int main()
 	for(i = 0; i < 26; i++)
 		if(arr[i])
 		{
-			if(c == 5)
+			if(c == 3)
 			{
 				printf("\n");
 				c = 0;

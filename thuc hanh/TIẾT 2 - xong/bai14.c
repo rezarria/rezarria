@@ -6,11 +6,11 @@ int main()
 	scanf("%d", &n);
 	int arr[n][n];
 	int t[n];
-	for(int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		t[i] = 0;
 		printf("Nhap hang %d\n", i + 1);
-		for(int j = 0; j < n; j++)
+		for (int j = 0; j < n; j++)
 		{
 			printf("Phan tu thu %d : ", j + 1);
 			scanf("%d", &arr[i][j]);
@@ -18,15 +18,15 @@ int main()
 		}
 	}
 	printf("\n");
-	for(int i = 0; i < n; i++)
-		printf("%d\n", t[i]);
+	for (int i = 0; i < n; i++)
+		printf("Tong hang [%2d]: %d\n", t[i]);
 	printf("--------------------------\n");
-	for(int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
-		for(int j = 0; j < n; j++)
+		for (int j = 0; j < n; j++)
 			printf("%5d  ", arr[i][j]);
 		printf("\n");
 	}
 	return 0;
 }
-	
+

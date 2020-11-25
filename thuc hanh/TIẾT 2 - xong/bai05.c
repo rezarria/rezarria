@@ -18,7 +18,7 @@ int main()
 		{
 			printf("\nphan tu thu %d :", i);
 			scanf("%d", &arr[i]);
-		} while (arr[i] > 0);
+		} while (arr[i] < 0);
 		// Sau khi nhập giá trị cho phần tử thì cũng cộng vào phần tử đố vào s luôn
 		s += arr[i];
 	}

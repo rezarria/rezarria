@@ -1,38 +1,69 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+int cmp(const void* a, const void* b);
+void displayArr(int* arr, unsigned int n);
+void importArr(int* arr, unsigned int n);
+void check(int* a, int* b, unsigned int n);
+
 int main()
 {
-	int n;
-	printf("Nhap n = ");
-	scanf("%d", &n);
-	int arr[2][n];
-	for (char t = 0; t < 2; t++)
-	{
-		printf("Nhap mang %c :\n", 'a' + t);
-		for (int i = 0; i < n; i++)
-		{
-			printf("Nhap phan tu %d : ", i);
-			scanf("%d", &arr[t][i]);
-		}
-		for (int i = 0; i < n - 1; i++)
-			for (int j = i + 1; j < n; j++)
-			{
-				arr[t][i] += arr[t][j];
-				arr[t][j] = arr[t][i] - arr[t][j];
-				arr[t][i] -= arr[t][j];
-			}
-	}
+	unsigned int n;
+	printf("Nhap so n : ");
+	scanf("%u", &n);
 
-	char check = 0;
-	for (int i = 0; i < n; i++)
-		if (arr[0][i] != arr[1][i])
+	int* a = (int*)calloc(n + 1llu, 4llu);
+	int* b = (int*)calloc(n + 1llu, 4llu);
+
+	printf("\nNhap mang a\n");
+	importArr(a, n);
+	printf("\nNhap mang b\n");
+	importArr(b, n);
+
+	qsort(a, n, sizeof(int), cmp);
+	qsort(b, n, sizeof(int), cmp);
+
+	printf("\nSap xep lai...\n");
+
+	displayArr(a, n);
+	displayArr(b, n);
+	check(a, b, n);
+
+	return EXIT_SUCCESS;
+}
+
+void importArr(int* arr, unsigned int n)
+{
+	for (unsigned int i = 0; i < n; i++)
+	{
+		printf("Nhap phan tu %5u\t:\t", i);
+		scanf("%d", &arr[i]);
+	}
+}
+
+void displayArr(int* arr, unsigned int n)
+{
+	printf("\n----------------------\n");
+	for (unsigned int i = 0; i < n; i++)
+		printf("phan tu %2u\t:\t%4d\n", i, arr[i]);
+}
+
+void check(int* a, int* b, unsigned int n)
+{
+	unsigned int count = 0;
+	for (unsigned int i = 0u; i < n; i++)
+		if (a[i] != b[i])
 		{
-			check++;
+			count++;
 			break;
 		}
-
-	if (check)
-		printf("\nHai mang khong tuong dong\n");
+	if (count)
+		printf("Hai mang khac nhau\n");
 	else
-		printf("\nHai mang tuong dong\n");
-	return 0;
+		printf("Khac nhau ve trat tu\n");
+}
+
+int cmp(const void* a, const void* b)
+{
+	return (*(int*)a - *(int*)b);
 }

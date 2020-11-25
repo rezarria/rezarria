@@ -1,64 +1,51 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 
-void sort(uint32_t* i, uint64_t n);
+int cmp(const void* a, const void* b);
+void displayArr(int* arr, unsigned int n);
+void importArr(int* arr, unsigned int n);
 
 int main()
 {
-	uint64_t n;
-	printf("Nhap n : ");
-	scanf("%llu", &n);
+	unsigned int n;
+	printf("Nhap so n : ");
+	scanf("%u", &n);
 
-	int32_t arr[n + 1llu];
+	int* arr = (int*)calloc(n + 1llu, 4llu);
 
-	for (uint64_t i = 0llu; i < n; i++)
-	{
-		printf("Nhap phan tu %llu\t:\t", i);
-		scanf("%d", &arr[i]);
-	}
+	importArr(arr, n);
 
-	sort(arr, n);
+	qsort(arr, n, 4, cmp);
+	displayArr(arr, n);
 
-
-	for (uint64_t i = 0llu; i < n; i++)
-		printf("%5d", arr[i]);
-
-
-	printf("\nNhap phan tu x\t:\t");
+	printf("Nhap phan tu x\t:\t");
 	scanf("%d", &arr[n]);
+
 	n++;
-
-
-
-
-	if (!(arr[n - 2llu] < arr[n - 1llu]))
-		if (arr[0] > arr[n - 1llu])
-			for (uint64_t i = n - 1; i > 0llu; i--)
-			{
-				arr[i] = arr[i] ^ arr[i - 1llu];
-				arr[i - 1llu] = arr[i] ^ arr[i - 1llu];
-				arr[i] = arr[i] ^ arr[i - 1llu];
-			}
-		else
-			sort(arr, n);
-
-	for (uint64_t i = 0llu; i < n; i++)
-		printf("%5d", arr[i]);
+	qsort(arr, n, 4llu, &cmp);
+	displayArr(arr, n);
 
 	return EXIT_SUCCESS;
-
 }
 
-void sort(uint32_t* arr, uint64_t n)
+void importArr(int* arr, unsigned int n)
 {
-	for (uint64_t i = 0; i < n - 1llu; i++)
-		for (uint64_t j = i + 1llu; j < n; j++)
-			if (arr[i] > arr[j])
-			{
-				arr[i] = arr[i] ^ arr[j];
-				arr[j] = arr[i] ^ arr[j];
-				arr[i] = arr[i] ^ arr[j];
+	printf("Nhap mang\n");
+	for (unsigned int i = 0; i < n; i++)
+	{
+		printf("Nhap phan tu %5d\t:\t", i);
+		scanf("%d", &arr[i]);
+	}
+}
 
-			}
+void displayArr(int* arr, unsigned int n)
+{
+	printf("\n----------------------\n");
+	for (unsigned int i = 0; i < n; i++)
+		printf("phan tu %2u\t:\t%4d\n", i, arr[i]);
+}
+
+int cmp(const void* a, const void* b)
+{
+	return (*(int*)a - *(int*)b);
 }

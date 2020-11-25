@@ -25,5 +25,6 @@ int main()
 			printf("%3d\t", arr[i][j]);
 		putchar('\0');
 	}
+	printf("Tong duong chan trong mang la %5d\n", t);
 	return 0;
 }
