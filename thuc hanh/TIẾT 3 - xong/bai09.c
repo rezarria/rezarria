@@ -1,69 +1,70 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-int nhapN();
+uint64_t importN();
 
-int tongChia(int n);
-void inTongChia(int n);
+float tongChia(uint64_t n);
+void inTongChia(float n);
 
-int tongLe(int n);
-void inTongLe(int n);
+uint64_t tongLe(uint64_t n);
+void inTongLe(uint64_t n);
 
-int giaiThua(int n);
-void inGiaiThua(int n);
+uint64_t giaiThua(uint64_t n);
+void inGiaiThua(uint64_t n);
 
-int main()
+int32_t main()
 {
-	inTongLe(tongLe(nhapN()));
-	inTongChia(tongChia(nhapN()));
-	inGiaiThua(giaiThua(nhapN()));
-	return 0;
+	inTongLe(tongLe(importN()));
+	inTongChia(tongChia(importN()));
+	inGiaiThua(giaiThua(importN()));
+	return EXIT_SUCCESS;
 }
 
-//-----------------------------------
 
-int nhapN()
+uint64_t importN()
 {
-	int n;
+	uint64_t n;
 	printf("\nNhap n : ");
-	scanf("%d", &n);
+	scanf("%llu", &n);
 	return n;
 }
 
-int tongLe(int n)
+uint64_t tongLe(uint64_t n)
 {
-	int i, s = 0;
-	for(i = 1; i <= n; i++)
+	uint64_t s = 0llu;
+	for (uint64_t i = 1; i <= n; i++)
 		s += 2 * i;
 	return s;
 }
 
-void inTongLe(int n)
+void inTongLe(uint64_t n)
 {
-	printf("T cua 1 + ... + (2*n + 1) = %d\n", n);
+	printf("T cua 1 + ... + (2*n + 1) = %4llu\n", n);
 }
 
-int tongChia(int n)
+float tongChia(uint64_t n)
 {
-	int i, s = 0;
-	for(i = 1; i <= n; i++)
-		s += 1.0 / i;
+	float s = 0;
+	for (uint64_t i = 1; i <= n; i++)
+		s += 1.0f / i;
 	return s;
 }
 
-void inTongChia(int n)
+void inTongChia(float n)
 {
-	printf("T cua 1 + ... +1/n = %d\n", n);
+	printf("T cua 1 + ... +1/n = %3.2f\n", n);
 }
 
-int giaiThua(n)
+uint64_t giaiThua(uint64_t n)
 {
-	int r = 1;
-	if (n != 1)
-		r*=giaiThua(n - 1) * n;
+	uint64_t r = 1llu;
+	if (n != 1llu)
+		r *= giaiThua(n - 1llu) * n;
 	return r;
 }
 
-void inGiaiThua(int n)
+void inGiaiThua(uint64_t n)
 {
 	printf("Gia thua cua n = %d\n", n);
 }

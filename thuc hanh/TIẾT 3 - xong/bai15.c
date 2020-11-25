@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-void swap(float *a, float *b)
+void swap(float* a, float* b)
 {
-    *(uint32_t *)a = *(uint32_t *)a ^ *(uint32_t *)b;
-    *(uint32_t *)b = *(uint32_t *)a ^ *(uint32_t *)b;
-    *(uint32_t *)a = *(uint32_t *)a ^ *(uint32_t *)b;
+    *(uint32_t*)a = *(uint32_t*)a ^ *(uint32_t*)b;
+    *(uint32_t*)b = *(uint32_t*)a ^ *(uint32_t*)b;
+    *(uint32_t*)a = *(uint32_t*)a ^ *(uint32_t*)b;
 }
 
 float nhapFloat(char c)
@@ -22,5 +23,5 @@ int main()
     float b = nhapFloat('b');
     swap(&a, &b);
     printf("a = %f\nb = %05f\n", a, b);
-    return 0;
+    return EXIT_SUCCESS;
 }

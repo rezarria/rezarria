@@ -1,63 +1,65 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
+
 typedef struct
 {
-    int n;
-    int *arr;
+    int32_t n;
+    int32_t* arr;
 } arrT;
 
-int nhapN();
-arrT *taoMang(int n);
-void napMang(arrT *arr, int n);
-arrT *nhapMang(arrT *arr);
-arrT *loc(arrT *arr);
-int tong(arrT *arr);
-void inKetQua(int n);
+uint64_t importN();
+arrT* taoMang(uint64_t n);
+void napMang(arrT* arr, uint64_t n);
+arrT* nhapMang(arrT* arr);
+arrT* loc(arrT* arr);
+int32_t tong(arrT* arr);
+void printfResult(int32_t n);
 
-int main()
+int32_t main()
 {
-    inKetQua(tong(loc(nhapMang(taoMang(nhapN())))));
+    printfResult(tong(loc(nhapMang(taoMang(importN())))));
     return 0;
 }
 
-int nhapN()
+uint64_t importN()
 {
-    int n;
+    int64_t n;
     printf("Nhap n : ");
-    scanf("%d", &n);
+    scanf("%llu", &n);
     return n;
 }
 
-arrT *taoMang(int n)
+arrT* taoMang(uint64_t n)
 {
-    arrT *arr = (arrT *)malloc(sizeof(arrT));
+    arrT* arr = (arrT*)malloc(sizeof(arrT));
     arr->n = n;
-    arr->arr = (int *)calloc(n, sizeof(int));
+    arr->arr = (int32_t*)calloc(n, sizeof(int32_t));
     return arr;
 }
 
-void napMang(arrT *arr, int n)
+void napMang(arrT* arr, uint64_t n)
 {
     arr->n++;
-    arr->arr = (int *)realloc(arr->arr, arr->n * sizeof(int));
-    arr->arr[arr->n - 1] = n;
+    arr->arr = (int32_t*)realloc(arr->arr, arr->n * sizeof(int32_t));
+    arr->arr[arr->n - 1llu] = n;
 }
 
-arrT *nhapMang(arrT *arr)
+arrT* nhapMang(arrT* arr)
 {
-    for (int i = 0; i < arr->n; i++)
+    for (uint64_t i = 0llu; i < arr->n; i++)
         do
         {
-            printf("Nhap phan tu thu %d : ", i);
+            printf("Nhap phan tu thu %3llu : ", i);
             scanf("%d", &arr->arr[i]);
         } while (arr->arr[i] < 1);
-    return arr;
+        return arr;
 }
 
-arrT *loc(arrT *arr)
+arrT* loc(arrT* arr)
 {
-    arrT *rArr = taoMang(0);
-    for (int i = 0; i < arr->n; i++)
+    arrT* rArr = taoMang(0);
+    for (uint64_t i = 0llu; i < arr->n; i++)
     {
         if (arr->arr[i] % 2)
             napMang(rArr, arr->arr[i]);
@@ -65,17 +67,17 @@ arrT *loc(arrT *arr)
     return rArr;
 }
 
-int tong(arrT *arr)
+int32_t tong(arrT* arr)
 {
-    int t = 0;
-    for (int i = 0; i < arr->n; i++)
+    int32_t t = 0;
+    for (uint64_t i = 0llu; i < arr->n; i++)
         t += arr->arr[i];
     free(arr->arr);
     free(arr);
     return t;
 }
 
-void inKetQua(int n)
+void printfResult(int32_t n)
 {
     printf("T = %d\n", n);
 }

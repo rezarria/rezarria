@@ -10,28 +10,28 @@ typedef struct
     bool cons;
 } observerT;
 
-uint64_t lamLe(uint64_t n);
-observerT *nhapN();
-observerT *isPrime(observerT *observer);
-observerT *inKetQua(observerT *observer);
-void clean(observerT *observer);
+uint64_t makeOdd(uint64_t n);
+observerT* importN();
+observerT* isPrime(observerT* observer);
+observerT* printfResult(observerT* observer);
+void clean(observerT* observer);
 
 int main()
 {
-    clean(inKetQua(isPrime(nhapN())));
-    return 0;
+    clean(printfResult(isPrime(importN())));
+    return EXIT_SUCCESS;
 }
 
-uint64_t lamLe(uint64_t n)
+uint64_t makeOdd(uint64_t n)
 {
-    return (n % 2) ? (n) : (n - 1);
+    return (n % 2llu) ? (n) : (n - 1llu);
 }
 
-observerT *nhapN()
+observerT* importN()
 {
-    observerT *observer = (observerT *)malloc(sizeof(observerT));
-    observer->n = 0;
-    while (observer->n < 1)
+    observerT* observer = (observerT*)malloc(sizeof(observerT));
+    observer->n = 0llu;
+    while (observer->n < 1llu)
     {
         printf("Nhap n : ");
         scanf("%llu", &observer->n);
@@ -39,25 +39,25 @@ observerT *nhapN()
     return observer;
 }
 
-observerT *isPrime(observerT *observer)
+observerT* isPrime(observerT* observer)
 {
-    if (observer->n % 2)
+    if (observer->n % 2llu)
         switch (observer->n)
         {
-        case 1:
+        case 1llu:
             observer->cons = false;
-        case 2:
-        case 3:
-        case 5:
-        case 7:
-        case 11:
+        case 2llu:
+        case 3llu:
+        case 5llu:
+        case 7llu:
+        case 11llu:
             observer->cons = true;
             break;
         default:
         {
             uint64_t m = sqrtl(observer->n);
             if (observer->n % m)
-                for (uint64_t i = lamLe(observer->n); i > 2; i -= 2)
+                for (uint64_t i = makeOdd(observer->n); i > 2llu; i -= 2llu)
                     if (observer->n % i)
                     {
                         observer->cons = false;
@@ -74,7 +74,7 @@ observerT *isPrime(observerT *observer)
     return observer;
 }
 
-observerT *inKetQua(observerT *observer)
+observerT* printfResult(observerT* observer)
 {
     printf("%llu", observer->n);
     if (observer->cons)
@@ -84,7 +84,7 @@ observerT *inKetQua(observerT *observer)
     return observer;
 }
 
-void clean(observerT *observer)
+void clean(observerT* observer)
 {
     free(observer);
 }

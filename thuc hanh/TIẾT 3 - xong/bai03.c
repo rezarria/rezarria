@@ -1,34 +1,37 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-int nhapN();
-int tongChia(int n);
-void inTongChia(int n);
+int32_t importN();
+float tongChia(int32_t n);
+void inTongChia(float n);
 
 int main()
 {
-	inTongChia(tongChia(nhapN()));
-	return 0;
+	inTongChia(tongChia(importN()));
+	return EXIT_SUCCESS;
 }
 
 //---------------------------------
 
-int nhapN()
+int32_t importN()
 {
-	int n;
+	int32_t n;
 	printf("Nhap n : ");
 	scanf("%d", &n);
 	return n;
 }
 
-int tongChia(int n)
+float tongChia(int32_t n)
 {
-	int i, s = 0;
-	for(i = 1; i <= n; i++)
-		s += 1.0 / i;
+	float s = 1.0f;
+	n++;
+	for (int32_t i = 2; i < n; i++)
+		s += 1.0f / i;
 	return s;
 }
 
-void inTongChia(int n)
+void inTongChia(float n)
 {
 	printf("T cua 1 + ... +1/n = %d", n);
 }

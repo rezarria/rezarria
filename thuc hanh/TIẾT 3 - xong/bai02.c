@@ -1,18 +1,18 @@
 #include <stdio.h>
 
-int nhapN();
+int importN();
 int tongLe(int n);
 void inTongLe(int n);
 
 int main()
 {
-	inTongLe(tongLe(nhapN()));
+	inTongLe(tongLe(importN()));
 	return 0;
 }
 
 //----------------------------
 
-int nhapN()
+int importN()
 {
 	int n;
 	printf("Nhap n : ");

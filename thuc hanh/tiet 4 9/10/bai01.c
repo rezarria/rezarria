@@ -95,7 +95,7 @@ MGR_P taoRecord(MGR_P mgr)
 MGR_P nhapThongTin(MGR_P mgr)
 {
     printf("Bat dau nhap thong tin\n");
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
     {
         RECORD_P p = &mgr->record[i];
         p->t = 0;
@@ -121,7 +121,7 @@ REPORT_P fill(MGR_P mgr, float score)
 {
     printf("Bat dau loc cac thi sinh co tong diem >= %3.2f\n", score);
     REPORT_P report = taoReport();
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
         if (mgr->record[i].t >= score)
             napReport(report, &mgr->record[i]);
     return report;
@@ -130,14 +130,14 @@ REPORT_P fill(MGR_P mgr, float score)
 void hienRecord(MGR_P mgr)
 {
     printf("Danh sach cac thi sinh\n");
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
     {
         RECORD_P p = &mgr->record[i];
         printf("------------------------------\n");
         printf("So bao danh\t:\t%5llu\n", p->id);
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Tuoi\t\t:\t%5llu\n", p->age);
-        for (uint64_t j = 0; j < __max_number_of_score; j++)
+        for (uint64_t j = 0llu; j < __max_number_of_score; j++)
             printf("Diem %llu\t\t:\t%5.2f\n", j + 1, p->score[j]);
         printf("Tong diem\t:\t%5.2f\n", p->t);
     }
@@ -146,14 +146,14 @@ void hienRecord(MGR_P mgr)
 void hienReport(REPORT_P report)
 {
     printf("Co %5llu thi sinh\n", report->n);
-    for (uint64_t i = 0; i < report->n; i++)
+    for (uint64_t i = 0llu; i < report->n; i++)
     {
         RECORD_P p = report->record[i];
         printf("------------------------------\n");
         printf("So bao danh\t:\t%5llu\n", p->id);
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Tuoi\t\t:\t%5llu\n", p->age);
-        for (uint64_t j = 0; j < __max_number_of_score; j++)
+        for (uint64_t j = 0llu; j < __max_number_of_score; j++)
             printf("Diem %llu\t\t:\t%5.2f\n", j + 1, p->score[j]);
         printf("Tong diem\t:\t%5.2f\n", p->t);
     }
@@ -163,7 +163,7 @@ void napReport(REPORT_P report, RECORD_P record)
 {
     report->n++;
     report->record = (RECORD_P*)realloc(report->record, sizeof(RECORD_P) * report->n);
-    report->record[report->n - 1] = record;
+    report->record[report->n - 1llu] = record;
 }
 
 REPORT_P taoReport()

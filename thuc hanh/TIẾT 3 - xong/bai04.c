@@ -1,34 +1,34 @@
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-int nhapN();
-int giaiThua(n);
-void inGiaiThua(int n);
+uint32_t importN();
+uint32_t giaiThua(uint32_t n);
+void inGiaiThua(uint32_t n);
 
 int main()
 {
-	inGiaiThua(giaiThua(nhapN()));
-	return 0;
+	inGiaiThua(giaiThua(importN()));
+	return EXIT_SUCCESS;
 }
 
-//---------------------------------
-
-int nhapN()
+uint32_t importN()
 {
-	int n;
+	int32_t n;
 	printf("Nhap n : ");
 	scanf("%d", &n);
 	return n;
 }
 
-int giaiThua(n)
+uint32_t giaiThua(uint32_t n)
 {
-	int r = 1;
+	int32_t r = 1;
 	if (n != 1)
-		r*=giaiThua(n - 1) * n;
+		r *= giaiThua(n - 1) * n;
 	return r;
 }
 
-void inGiaiThua(int n)
+void inGiaiThua(uint32_t n)
 {
-	printf("Gia thua cua n = %d", n);
+	printf("Gia thua cua n = %3d\n", n);
 }

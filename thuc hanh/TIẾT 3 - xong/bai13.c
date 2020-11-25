@@ -2,10 +2,7 @@
 #include <stdbool.h>
 #include <math.h>
 
-bool tamGiac(float a, float b, float c)
-{
-    return a > fabsf(b - c);
-}
+bool tamGiac(float a, float b, float c);
 
 int main()
 {
@@ -17,4 +14,9 @@ int main()
     else
         printf("Khong phai la tam giac\n");
     return 0;
+}
+
+bool tamGiac(float a, float b, float c)
+{
+    return a > fabsf(b - c);
 }

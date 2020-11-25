@@ -95,10 +95,10 @@ MGR_P taoRecord(MGR_P mgr)
 MGR_P nhapThongTin(MGR_P mgr)
 {
     printf("Bat dau nhap thong tin\n");
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
     {
         RECORD_P p = &mgr->record[i];
-        p->t = 0;
+        p->t = 0.0f;
         printf("Ho so thu %5llu\n", i);
         printf("Ma so bao danh\t:\t");
         scanf("%llu", &p->id);
@@ -115,7 +115,7 @@ MGR_P nhapThongTin(MGR_P mgr)
         printf("Gioi tinh\t:\t");
         fflush(stdin);
         fgets(p->sex, __max_length_of_name, stdin);
-        for (uint64_t j = 0; j < __max_number_of_score; j++)
+        for (uint64_t j = 0llu; j < __max_number_of_score; j++)
         {
             printf("Diem %llu\t\t:\t", j + 1ull);
             scanf("%f", &p->score[j]);
@@ -129,7 +129,7 @@ REPORT_P fill(MGR_P mgr, float score)
 {
     printf("Bat dau loc cac thi sinh co tong diem >= %3.2f\n", score);
     REPORT_P report = taoReport();
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
         if (mgr->record[i].t >= score)
             napReport(report, &mgr->record[i]);
     return report;
@@ -138,7 +138,7 @@ REPORT_P fill(MGR_P mgr, float score)
 void hienRecord(MGR_P mgr)
 {
     printf("Danh sach cac thi sinh\n");
-    for (uint64_t i = 0; i < mgr->n; i++)
+    for (uint64_t i = 0llu; i < mgr->n; i++)
     {
         RECORD_P p = &mgr->record[i];
         printf("------------------------------\n");
@@ -146,8 +146,8 @@ void hienRecord(MGR_P mgr)
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Ngay sinh\t:\t%02u/%02u/%04u\n", p->dob[0], p->dob[1], p->dob[2]);
         printf("Gioi tinh\t:\t%6s", p->sex);
-        for (uint64_t j = 0; j < __max_number_of_score; j++)
-            printf("Diem %llu\t\t:\t%5.2f\n", j + 1, p->score[j]);
+        for (uint64_t j = 0llu; j < __max_number_of_score; j++)
+            printf("Diem %llu\t\t:\t%5.2f\n", j + 1llu, p->score[j]);
         printf("Tong diem\t:\t%5.2f\n", p->t);
     }
 }
@@ -155,7 +155,7 @@ void hienRecord(MGR_P mgr)
 void hienReport(REPORT_P report)
 {
     printf("Co %5llu thi sinh\n", report->n);
-    for (uint64_t i = 0; i < report->n; i++)
+    for (uint64_t i = 0llu; i < report->n; i++)
     {
         RECORD_P p = report->record[i];
         printf("------------------------------\n");
@@ -163,8 +163,8 @@ void hienReport(REPORT_P report)
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Ngay sinh\t:\t%02u/%02u/%04u\n", p->dob[0], p->dob[1], p->dob[2]);
         printf("Gioi tinh\t:\t%6s", p->sex);
-        for (uint64_t j = 0; j < __max_number_of_score; j++)
-            printf("Diem %llu\t\t:\t%5.2f\n", j + 1, p->score[j]);
+        for (uint64_t j = 0llu; j < __max_number_of_score; j++)
+            printf("Diem %llu\t\t:\t%5.2f\n", j + 1llu, p->score[j]);
         printf("Tong diem\t:\t%5.2f\n", p->t);
     }
 }
@@ -173,7 +173,7 @@ void napReport(REPORT_P report, RECORD_P record)
 {
     report->n++;
     report->record = (RECORD_P*)realloc(report->record, sizeof(RECORD_P) * report->n);
-    report->record[report->n - 1] = record;
+    report->record[report->n - 1llu] = record;
 }
 
 REPORT_P taoReport()
