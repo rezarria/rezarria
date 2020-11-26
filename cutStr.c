@@ -4,19 +4,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-char ***cutStr(char *str);
-
-int main()
-{
-    return EXIT_SUCCESS;
-}
-
 int32_t strDecrea(const void *a, const void *b)
 {
     return -strcmp((const void *)a, (const void *)b);
 }
 
-char ***cutStr(char *str)
+char **cutStr(char *str)
 {
     char **list = (char **)calloc(255llu, sizeof(char *));
     bool cut = false;
@@ -47,5 +40,10 @@ char ***cutStr(char *str)
             break;
         }
     qsort((void *)list, n, sizeof(char *), strDecrea);
-    return realloc((void *)list, sizeof(char *) * n);
+    return (char **)realloc((void *)list, sizeof(char *) * n);
+}
+
+int main()
+{
+    return EXIT_SUCCESS;
 }
