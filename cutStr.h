@@ -1,3 +1,4 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,11 +7,12 @@
 
 int32_t strDecrea(const void *a, const void *b)
 {
-    return -strcmp((const void *)a, (const void *)b);
+    return -strcmp(*(const char **)a, *(const char **)b);
 }
 
 char **cutStr(char *str)
 {
+    printf("!!!!!\n");
     char **list = (char **)calloc(255llu, sizeof(char *));
     bool cut = false;
     size_t n = 0;
@@ -26,7 +28,7 @@ char **cutStr(char *str)
             {
                 cut = false;
                 end = i;
-                list[i] = (char)calloc(end - begin + 1llu, 1llu);
+                list[i] = (char *)calloc(end - begin + 1llu, 1llu);
                 memcpy((void *)list[i], (const void *)&str[begin], begin - end);
                 n++;
             }
@@ -40,10 +42,14 @@ char **cutStr(char *str)
             break;
         }
     qsort((void *)list, n, sizeof(char *), strDecrea);
-    return (char **)realloc((void *)list, sizeof(char *) * n);
+    return (char **)realloc((void *)list, sizeof(char *) * (n + 1llu));
 }
 
-int main()
+char ***cutStrList(char **listStr)
 {
-    return EXIT_SUCCESS;
+    char ***list = (char ***)calloc(256llu, sizeof(char **));
+    size_t n = 0;
+    for (; listStr[n]; n++)
+        list[n] = cutStr(listStr[n]);
+    return (char ***)realloc((void *)list, sizeof(char **) * (n + 1llu));
 }
