@@ -17,11 +17,30 @@
 			"problemMatcher": [
 				"$gcc"
 			],
+			"group": "build",
+			"detail": "compiler: C:\\MinGW\\bin\\gcc.exe"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe build active file",
+			"command": "C:\\MinGW\\bin\\g++.exe",
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${workspaceFolder}\\exe\\${fileBasenameNoExtension}.exe"
+			],
+			"options": {
+				"cwd": "C:\\MinGW\\bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compiler: C:\\MinGW\\bin\\gcc.exe"
+			"detail": "compiler: C:\\MinGW\\bin\\g++.exe"
 		}
 	]
 }
