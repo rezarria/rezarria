@@ -1,47 +1,35 @@
-#include <iostream>
-#include <cstdint>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdbool.h>
 
-uint64_t func(uint64_t x, uint64_t y)
+char** cutStr(char* str)
 {
-    uint64_t result = 0llu;
-    switch (x)
-    {
-    case 0llu:
-    {
-        switch (y)
+    char** list = (char**)calloc(256llu, sizeof(char*));
+    char* pos = NULL;
+    size_t n = 0llu;
+    bool cut = false;
+    for (;*str; str++)
+        switch (*str)
         {
-        case 0llu:
-            result = 0llu;
-            break;
-        case 1llu:
-            result = 1llu;
+        case '\n':
+        case '\0':
+        case ' ':
+            if (cut)
+            {
+                cut = false;
+                list[n] = (char*)calloc(str - pos + 1llu, sizeof(char));
+                strncpy(list[n], pos, str - pos);
+                n++;
+            }
             break;
         default:
-            result = func(0llu, y - 1llu) + func(0llu, y - 2llu);
+            if (!cut)
+            {
+                cut = true;
+                pos = str;
+            }
             break;
         }
-    }
-    break;
-    case 1:
-        if (y)
-            result = func(x - 1llu, y) + func(x, y - 1llu);
-        else
-            result = 1llu;
-        break;
-    default:
-        if (y)
-            result = func(x, y - 1llu) + func(x - 1llu, y);
-        else
-            result = func(x - 1llu, 0llu) + func(x - 2llu, 0llu);
-        break;
-    }
-    return result;
-}
-
-int main()
-{
-    uint64_t x, y;
-    std::cin >> x >> y;
-    std::cout << func(x, y) << std::endl;
-    return 0;
+    return (char**)realloc(list, sizeof(char*) * (n + 1llu));
 }
