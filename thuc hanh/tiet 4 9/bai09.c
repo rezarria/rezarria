@@ -13,6 +13,8 @@ typedef INFO_T* INFO_P;
 typedef struct LIST LIST_T;
 typedef LIST_T* LIST_P;
 
+typedef struct LINKSORT_S LINKSORT;
+typedef LINKSORT* LINKSORT_P;
 
 INFO_P  createInfo();
 void    importInfo(INFO_P info);
@@ -23,10 +25,14 @@ void    settingList(LIST_P list);
 void    importList(LIST_P list);
 void    sortList(LIST_P list);
 void    displayList(LIST_P list);
-void    deleteInfo(LIST_P list);
+void    deleteInfo(INFO_P info);
 
 char** cutName(char* name);
 int cmpStr(const void* a, const void* b);
+
+LINKSORT_P createLinkList(char*** listStrCut, LIST_P list);
+LINKSORT_P sortLinkList(LINKSORT_P linkList);
+
 
 int32_t main(int32_t argc, char** arg)
 {
@@ -100,6 +106,19 @@ int cmpStr(const void* a, const void* b)
 }
 
 
+LINKSORT_P createLinkList(char*** listStrCut, LIST_P list)
+{
+    LINKSORT_P listLink = (LINKSORT_P)calloc(1llu, sizeof(LINKSORT));
+    listLink->list = list;
+    listLink->listStrCut = listStrCut;
+    return listLink;
+}
+
+LINKSORT_P sortLinkList(LINKSORT_P linkList)
+{
+    return linkList;
+}
+
 struct INFO {
     char name[__max_length_of_name];
     uint64_t dob[3];
@@ -111,4 +130,10 @@ struct LIST
     uint64_t n;
     INFO_P* list;
     void* tmp;
+};
+
+struct LINKSORT_S
+{
+    char*** listStrCut;
+    LIST_P list;
 };
