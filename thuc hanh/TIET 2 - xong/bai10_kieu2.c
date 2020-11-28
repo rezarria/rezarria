@@ -35,7 +35,7 @@ int32_t* taoMang(uint64_t n)
 
 int32_t* nhapMang(int32_t* arr, uint32_t n)
 {
-    for (uint64_t i = 0; i < n; i++)
+    for (uint64_t i = 0llu; i < n; i++)
     {
         printf("[%llu]\t", i);
         scanf("%d", &arr[i]);
@@ -79,4 +79,3 @@ void hienMang(int32_t* arr, uint64_t n)
     for (uint64_t i = 0; i < n; i++)
         printf("%5d", arr[i]);
 }
-
