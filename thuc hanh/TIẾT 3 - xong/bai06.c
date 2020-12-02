@@ -22,7 +22,7 @@ void ptb2(float a, float b, float c)
 		if (d > 0.0f)
 			printf("x1 = %5.3f\nx2 = %5.3f\n", (-b + sqrt(d)) / (2.0f * a), (-b - sqrt(d)) / (2.0f * a));
 		else
-			printf("x = %5.3f\n", b / (-2.0f * a));
+		printf("Vo nghiem\n");	
 	else
-		printf("Vo nghiem\n");
+		printf("x = %5.3f\n", b / (-2.0f * a));
 }

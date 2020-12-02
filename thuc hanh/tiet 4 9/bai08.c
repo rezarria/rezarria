@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #define __max_length_of_name 256
 #define defualt_salary 1050000.0L
-
+// Bi loi o dau do :))))
 typedef struct NODE_S NODE;
 typedef NODE* NODE_P;
 struct NODE_S {
@@ -71,7 +71,7 @@ NODE_P importInfo(NODE_P node)
 	printf("Ho va ten\t:\t");
 	fgets(node->name, __max_length_of_name, stdin);
 	printf("Ti le luong\t:\t");
-	scanf_s("%Lf", &node->ratio);
+	scanf("%Lf", &node->ratio);
 	long double g = node->ratio * defualt_salary;
 	node->salary = g;
 	printf("\n---------------\n");
