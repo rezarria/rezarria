@@ -19,6 +19,16 @@ typedef struct RECORD_S
 } RECORD;
 typedef RECORD* RECORD_P;
 
+typedef struct STRLIST_S
+{
+    char** list;
+    size_t* length;
+    size_t n;
+} STRLIST;
+typedef STRLIST* STRLIST_P;
+
+
+
 INFO_P createInfo(uint64_t n);
 INFO_P importInfo(INFO_P info);
 INFO_P deleteInfo(INFO_P info);
@@ -33,8 +43,9 @@ RECORD_P sortInfoOfREcord(RECORD_P record);
 
 
 
-char** cutStr(char* str, size_t* _n);
-char*** cutStrList(char** list, size_t** _n);
+STRLIST_P cutStr(char* str);
+char** createStrList(RECORD_P record);
+STRLIST_P* cutStrList(char** listStr, size_t n);
 
 uint64_t importUint64();
 uint32_t importUint32();
@@ -54,52 +65,6 @@ int main()
     importInfoOfRecord(record);
     displayInfoOfRecord(record);
     return EXIT_SUCCESS;
-}
-
-char** cutStr(char* str, size_t* _n)
-{
-    char** list = (char**)calloc(256llu, sizeof(char*));
-    char* pos = NULL;
-    size_t n = 0llu;
-    if (_n)*_n = n;
-    bool cut = false;
-    do
-        switch (*str)
-        {
-        case '\n':
-        case '\0':
-        case ' ':
-            if (cut)
-            {
-                cut = false;
-                list[n] = (char*)calloc(str - pos + 1llu, sizeof(char));
-                strncpy(list[n++], pos, str - pos);
-            }
-            break;
-        default:
-            if (!cut)
-            {
-                cut = true;
-                pos = str;
-            }
-            break;
-        }
-    while (*(str++));
-    return (char**)realloc(list, sizeof(char*) * (n + 1llu));
-}
-
-char*** cutStrList(char** list, size_t** _n)
-{
-    char*** _list = (char***)calloc(256llu, sizeof(char**));
-    size_t* n = (size_t*)calloc(256llu, sizeof(size_t));
-    size_t i = 0llu;
-    do
-    {
-        _list[i++] = cutStr(*list, n++);
-    } while (*++list);
-    n = (size_t*)realloc(n, sizeof(size_t) * i);
-    if (_n) *_n = n;
-    return (char***)realloc(_list, sizeof(char**) * (i + 1llu));
 }
 
 INFO_P createInfo(uint64_t n)
@@ -184,6 +149,15 @@ RECORD_P displayInfoOfRecord(RECORD_P record)
 
 RECORD_P sortInfoOfREcord(RECORD_P record)
 {
+    char** listStr = createStrList(record);
+    STRLIST_P* list = cutStrList(listStr, record->n);
+    size_t m = record->n - 1llu;
+    for (size_t i = 0llu; i < m; i++)
+        for (size_t j = i + 1llu; j < record->n; j++)
+            if (strcmp(list[i]->list[list[i]->n], list[j]->list[list[j]->n]) > 0)
+            {
+                
+            }
     return record;
 }
 
@@ -209,4 +183,57 @@ uint32_t importUint32()
     uint64_t n;
     scanf("%u", &n);
     return n;
+}
+
+STRLIST_P cutStr(char* str)
+{
+    STRLIST_P list = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
+    list->list = (char**)calloc(256llu, sizeof(char*));
+    list->length = (size_t*)calloc(256llu, sizeof(size_t));
+    char* begin = NULL, * end = NULL;
+    bool cut = false;
+    do
+        switch (*str)
+        {
+        case ' ':
+        case '\0':
+        case '\n':
+            break;
+            if (cut)
+            {
+                cut = false;
+                end = cut;
+                list->list[list->n] = (char*)calloc(end - begin + 2llu, sizeof(char));
+                strncpy(list->list[list->n], &begin, end - begin + 1llu);
+                list->length[list->n] = strlen(list->list[list->n]);
+                list->n++;
+            }
+        default:
+            if (!cut)
+            {
+                cut = true;
+                begin = str;
+            }
+            break;
+        }
+    while (++str);
+    list->list = (char**)realloc(list->list, sizeof(char*) * list->n);
+    list->length = (size_t*)realloc(list->length, sizeof(size_t) * list->n);
+    return list;
+}
+
+STRLIST_P* cutStrList(char** listStr, size_t n)
+{
+    STRLIST_P* list = (STRLIST_P)calloc(n, sizeof(STRLIST_P));
+    for (size_t i = 0llu; i < n; i++)
+        list[i] = cutStr(listStr[i]);
+    return list;
+}
+
+char** createStrList(RECORD_P record)
+{
+    char** list = (char*)calloc(record->n, sizeof(char*));
+    for (size_t i = 0llu; i < record->n; i++)
+        list[i] = record->info->nameStr;
+    return list;
 }

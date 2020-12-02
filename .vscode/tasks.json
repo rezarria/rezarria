@@ -4,7 +4,7 @@
 		{
 			"type": "cppbuild",
 			"label": "C/C++: gcc.exe build active file",
-			"command": "C:\\MinGW\\bin\\gcc.exe",
+			"command": "C:\\TDM-GCC-64\\bin\\gcc.exe",
 			"args": [
 				"-g",
 				"${file}",
@@ -12,26 +12,7 @@
 				"${workspaceFolder}\\exe\\${fileBasenameNoExtension}.exe"
 			],
 			"options": {
-				"cwd": "C:\\MinGW\\bin"
-			},
-			"problemMatcher": [
-				"$gcc"
-			],
-			"group": "build",
-			"detail": "compiler: C:\\MinGW\\bin\\gcc.exe"
-		},
-		{
-			"type": "cppbuild",
-			"label": "C/C++: g++.exe build active file",
-			"command": "C:\\MinGW\\bin\\g++.exe",
-			"args": [
-				"-g",
-				"${file}",
-				"-o",
-				"${workspaceFolder}\\exe\\${fileBasenameNoExtension}.exe"
-			],
-			"options": {
-				"cwd": "C:\\MinGW\\bin"
+				"cwd": "C:\\TDM-GCC-64\\bin"
 			},
 			"problemMatcher": [
 				"$gcc"
@@ -40,7 +21,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compiler: C:\\MinGW\\bin\\g++.exe"
+			"detail": "compiler: C:\\TDM-GCC-64\\bin\\gcc.exe"
 		}
 	]
 }
