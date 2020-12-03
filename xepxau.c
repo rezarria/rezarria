@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #define InDiaChi(x) printf("0x%016x\n", &x)
+#define COLLECT(x). ((COLLECT_P)x)->
 
 typedef struct LIST_S
 {
@@ -35,6 +36,13 @@ typedef struct RECORD_S
 } RECORD;
 typedef RECORD* RECORD_P;
 
+typedef struct COLLECT_S
+{
+    RECORD_P record;
+    STRLIST_P strList;
+} COLLECT;
+typedef COLLECT* COLLECT_P;
+
 
 INFO_P taoInfo();
 INFO_P nhapInfo(INFO_P info);
@@ -56,8 +64,8 @@ LIST_P cutStr(char* str);
 
 char* nhapString();
 uint64_t nhapUi64();
-int32_t cmp(const void* a, const void* b);
-void myQsort(void* _Base, size_t _Count, size_t _Size, int(*_cmp)(void* _a, void* _b), void(*_swap)(void* _a, void* _b));
+
+
 
 int main()
 {
@@ -214,10 +222,3 @@ uint64_t nhapUi64()
     scanf("%llu", &n);
     return n;
 }
-
-int32_t cmp(const void* a, const void* b)
-{
-    return 0;//chua xong
-}
-
-
