@@ -12,6 +12,14 @@ typedef struct LIST_S
 } LIST;
 typedef LIST* LIST_P;
 
+typedef struct STRLIST_S
+{
+    LIST_P* list;
+    uint64_t n;
+} STRLIST;
+typedef STRLIST* STRLIST_P;
+
+
 typedef struct INFO_S
 {
     char* nameStr;
@@ -27,6 +35,7 @@ typedef struct RECORD_S
 } RECORD;
 typedef RECORD* RECORD_P;
 
+
 INFO_P taoInfo();
 INFO_P nhapInfo(INFO_P info);
 INFO_P hienInfo(INFO_P info);
@@ -36,6 +45,12 @@ RECORD_P taoRecord();
 RECORD_P taoInfoTrongRecord(RECORD_P record, size_t n);
 RECORD_P nhapInfoTrongRecord(RECORD_P record);
 RECORD_P hienInfoTrongRecord(RECORD_P record);
+RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record);
+
+STRLIST_P taoStrList(RECORD_P record);
+
+
+
 
 LIST_P cutStr(char* str);
 
@@ -155,7 +170,7 @@ RECORD_P taoInfoTrongRecord(RECORD_P record, size_t n)
 RECORD_P nhapInfoTrongRecord(RECORD_P record)
 {
     for (size_t i = 0llu; i < record->n; i++)
-        nhapInfo(record->info[i]);
+        record->info[i] = nhapInfo(taoInfo());
     return record;
 }
 
@@ -165,6 +180,22 @@ RECORD_P hienInfoTrongRecord(RECORD_P record)
         hienInfo(record->info[i]);
     return record;
 }
+
+RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record)
+{
+    STRLIST_P StrList = taoStrList(record);
+    return record;
+}
+
+STRLIST_P taoStrList(RECORD_P record)
+{
+    STRLIST_P StrList = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
+    StrList->list = (LIST_P*)calloc(record->n, sizeof(LIST_P));
+    for (size_t i = 0llu; i < record->n; i++)
+        StrList->list[i] = cutStr(record->info[i]->nameStr);
+    return StrList;
+}
+
 
 char* nhapString()
 {
