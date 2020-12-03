@@ -45,8 +45,10 @@ uint64_t nhapUi64();
 
 int main()
 {
-    INFO* info = nhapInfo(taoInfo());
-    hienInfo(info);
+    RECORD_P record = taoRecord();
+    taoInfoTrongRecord(record, nhapUi64());
+    nhapInfoTrongRecord(record);
+    hienInfoTrongRecord(record);
     return 0;
 }
 
@@ -146,6 +148,7 @@ RECORD_P taoRecord()
 RECORD_P taoInfoTrongRecord(RECORD_P record, size_t n)
 {
     record->info = (INFO_P*)calloc(n, sizeof(INFO_P));
+    record->n = n;
     return record;
 }
 
