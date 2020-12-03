@@ -28,8 +28,9 @@ LIST_P displayInfoInList(LIST_P list);
 LIST_P sortList(LIST_P list);
 
 STRLIST_P cutStr(char* str);
-
 STRLIST_P* cutStrList(LIST_P list);
+
+LIST_P func(LIST_P* list, STRLIST_P** listStr, size_t begin, size_t end, size_t index);
 
 int32_t main()
 {
@@ -182,6 +183,23 @@ LIST_P sortList(LIST_P list)
             begin = i;
         }
     }
+    begin = 0llu;
+    for (size_t i = 0llu; i < m; i++)
+        for (size_t j = i + 1llu; j < list->n; j++)
+            if (strcmp(listStr[i]->list[listStr[i]->n - 1llu], listStr[j]->list[listStr[j]->n - 1llu]) != 0)
+            {
+                size_t z_m = j - 1llu;
+                for (size_t z = i; z < z_m; z++)
+                    for (size_t k = z + 1llu; k < j; k++)
+                        if (listStr[z]->n != listStr[k]->n)
+                        {
+                            func(&list, &listStr, z, k - 1llu, 0llu);
+                            z = k;
+                            k = j;
+                        }
+                i = j;
+                j = list->n;
+            }
     return list;
 }
 
@@ -210,4 +228,21 @@ void swap(void* a, void* b)
     *(size_t*)a = *(size_t*)a ^ *(size_t*)b;
     *(size_t*)b = *(size_t*)a ^ *(size_t*)b;
     *(size_t*)a = *(size_t*)a ^ *(size_t*)b;
+}
+
+LIST_P func(LIST_P* list, STRLIST_P** listStr, size_t begin, size_t end, size_t index)
+{
+    size_t m = end + 1llu;
+    for (size_t i = begin; i <= end; i++)
+        for (size_t j = i + 1llu; j < end; j++)
+            if (listStr[0][i]->list[index], listStr[0][j]->list[index])
+            {
+                {
+                    swap((void*)&listStr[0][i], (void*)&listStr[0][j]);
+                    swap((void*)&list[0][i], (void*)&list[0][j]);
+                }
+            }
+    if ((index + 1llu) < listStr[0][begin]->n)
+        func(list, listStr, begin, end, index + 1llu);
+    return list;
 }
