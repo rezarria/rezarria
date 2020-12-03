@@ -15,7 +15,7 @@ typedef LIST* LIST_P;
 
 typedef struct STRLIST_S
 {
-    LIST_P* list;
+    LIST_P* strList;
     uint64_t n;
 } STRLIST;
 typedef STRLIST* STRLIST_P;
@@ -200,12 +200,11 @@ RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record)
 STRLIST_P taoStrList(RECORD_P record)
 {
     STRLIST_P StrList = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
-    StrList->list = (LIST_P*)calloc(record->n, sizeof(LIST_P));
+    StrList->strList = (LIST_P*)calloc(record->n, sizeof(LIST_P));
     for (size_t i = 0llu; i < record->n; i++)
-        StrList->list[i] = cutStr(record->info[i]->nameStr);
+        StrList->strList[i] = cutStr(record->info[i]->nameStr);
     return StrList;
 }
-
 
 char* nhapString()
 {
@@ -215,10 +214,45 @@ char* nhapString()
     return (char*)realloc((void*)str, sizeof(char) * (1llu + strlen(str)));
 }
 
-
 uint64_t nhapUi64()
 {
     uint64_t n;
     scanf("%llu", &n);
     return n;
+}
+
+size_t partition(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void*, const void*), void (*swap)(void*, void*))
+{
+    void* pivot = (size_t)_a + _sizeA * _high;
+    size_t i = _low - 1llu;
+    size_t m = _high - 1llu;
+    for (size_t j = _low; j < m; j++)
+        if (cmp(pivot, (size_t)_a + _sizeA * j))
+        {
+            i++;
+            swap((size_t)_a + _sizeA * i, (size_t)_a + _sizeA * j);
+            swap((size_t)_b + _sizeB * i, (size_t)_b + _sizeB * j);
+        }
+    swap((size_t)_a + _sizeA * (i + 1llu), (size_t)_a + _sizeA * _high);
+    swap((size_t)_b + _sizeB * (i + 1llu), (size_t)_b + _sizeB * _high);
+    return i;
+}
+
+void mQsort(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void* _a, const void* _b), void (*swap)(void* _a, void* _b))
+{
+    if (_low < _high)
+    {
+        size_t pined = partition(_a, _b, _sizeA, _sizeB, _low, _high, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, _low, pined - 1llu, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, pined + 1llu, _high, cmp, swap);
+    }
+}
+
+void swapF(void* a, void* b, size_t size)
+{
+    void* tmp = malloc(size);
+    memcpy(tmp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, tmp, size);
+    free(tmp);
 }

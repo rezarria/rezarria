@@ -1,248 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
 
-typedef struct INFO_S INFO;
-typedef INFO* INFO_P;
-
-typedef struct LIST_S LIST;
-typedef LIST* LIST_P;
-
-typedef struct STRLIST_S STRLIST;
-typedef STRLIST* STRLIST_P;
-
-
-void swap(void* a, void* b);
-char* importString();
-uint64_t importUI64();
-
-INFO_P createInfo();
-INFO_P importInfo(INFO_P info);
-
-LIST_P createList();
-LIST_P createInfoInList(LIST_P list);
-LIST_P importInfoInList(LIST_P list);
-LIST_P displayInfoInList(LIST_P list);
-LIST_P sortList(LIST_P list);
-
-STRLIST_P cutStr(char* str);
-STRLIST_P* cutStrList(LIST_P list);
-
-LIST_P func(LIST_P* list, STRLIST_P** listStr, size_t begin, size_t end, size_t index);
-
-int32_t main()
+size_t partition(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void*, const void*), void (*swap)(void*, void*, size_t _size))
 {
-    return EXIT_SUCCESS;
-}
-
-char* importString()
-{
-    printf("> ");
-    char* str = (char*)calloc(256llu, sizeof(char));
-    fseek(stdin, 0l, SEEK_CUR);
-    fgets(str, 256, stdin);
-    return str;
-}
-
-uint64_t importUI64()
-{
-    uint64_t n;
-    printf("> ");
-    scanf("%llu", &n);
-    return n;
-}
-
-INFO_P createInfo()
-{
-    return (INFO_P)calloc(1llu, sizeof(INFO));
-}
-
-INFO_P importInfo(INFO_P info)
-{
-    printf("Ten\t:\t");
-    info->nameStr = importString();
-    printf("Lop\t:\t");
-    info->classStr = importString();
-    printf("Ngay sinh\n");
-    info->dob = (size_t)calloc(3llu, sizeof(size_t));
-    printf("Ngay\t:\t");
-    info->dob[0] = importUI64();
-    printf("Thang\t:\t");
-    info->dob[0] = importUI64();
-    printf("Nam\t:\t");
-    info->dob[0] = importUI64();
-    return info;
-}
-
-LIST_P createList()
-{
-    return (LIST_P)calloc(1llu, sizeof(LIST));
-}
-
-LIST_P createInfoInList(LIST_P list)
-{
-    list->n = importUI64();
-    list->list = (INFO_P*)calloc(list->n, sizeof(INFO_P));
-    return list;
-}
-
-LIST_P importInfoInList(LIST_P list)
-{
-    for (size_t i = 0llu; i < list->n; i++)
-        list->list[i] = importInfo(createInfo());
-    return list;
-}
-
-LIST_P displayInfoInList(LIST_P list)
-{
-    for (size_t i = 0llu; i < list->n; i++)
-    {
-        printf("--------------------------------------------\n");
-        printf("Ten\t:\t%s", list->list[i]->nameStr);
-        printf("Lop\t:\t%s", list->list[i]->classStr);
-        printf("Ngay sinh\t:\t%2llu/%2llu/%4llu\n", list->list[i][0], list->list[i][1], list->list[i][3]);
-    }
-    return list;
-}
-
-STRLIST_P cutStr(char* str)
-{
-    STRLIST_P list = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
-    list->list = (char**)calloc(256llu, sizeof(char*));
-    list->length = (size_t*)calloc(256llu, sizeof(size_t));
-    char* begin = NULL, * end = NULL;
-    bool cut = false;
-    do
-        switch (*str)
+    void* pivot = (size_t)_a + _sizeA * _high;
+    size_t i = _low - 1llu;
+    size_t m = _high - 1llu;
+    for (size_t j = _low; j < m; j++)
+        if (cmp(pivot, (size_t)_a + _sizeA * j))
         {
-        case ' ':
-        case '\0':
-        case '\n':
-            if (cut)
-            {
-                cut = false;
-                end = str;
-                list->list[list->n] = (char*)calloc(end - begin + 2llu, sizeof(char));
-                strncpy(list->list[list->n], begin, end - begin + 1llu);
-                list->length[list->n] = strlen(list->list[list->n]);
-                list->n++;
-            }
-            break;
-        default:
-            if (!cut)
-            {
-                cut = true;
-                begin = str;
-            }
-            break;
+            i++;
+            swap((size_t)_a + _sizeA * i, (size_t)_a + _sizeA * j, _sizeA);
+            swap((size_t)_b + _sizeB * i, (size_t)_b + _sizeB * j, _sizeB);
         }
-    while (*(++str));
-
-
-    list->list = realloc((void*)list->list, sizeof(char*) * list->n);
-    list->length = realloc((void*)list->length, sizeof(size_t) * list->n);
-    return list;
+    swap((size_t)_a + _sizeA * (i + 1llu), (size_t)_a + _sizeA * _high, _sizeA);
+    swap((size_t)_b + _sizeB * (i + 1llu), (size_t)_b + _sizeB * _high, _sizeB);
+    return i;
 }
 
-STRLIST_P* cutStrList(LIST_P list)
+void mQsort(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void* _a, const void* _b), void (*swap)(void* _a, void* _b, size_t _size))
 {
-    STRLIST_P* listStr = (STRLIST_P*)calloc(list->n, sizeof(STRLIST_P));
-    for (size_t i = 0llu; i < list->n; i++)
-        listStr[i] = cutStr(list->list[i]->nameStr);
-    return listStr;
-}
-
-LIST_P sortList(LIST_P list)
-{
-    STRLIST_P* listStr = cutStrList(list);
-    size_t m = list->n - 1llu;
-    for (size_t i = 0llu; i < m; i++)
-        for (size_t j = i + 1llu; j < list->n; j++)
-            if (strcmp(listStr[i]->list[listStr[i]->n - 1llu], listStr[j]->list[listStr[j]->n - 1llu]) > 0)
-            {
-                swap((void*)&listStr[i], (void*)&listStr[j]);
-                swap((void*)&list->list[i], (void*)&list->list[j]);
-            }
-    size_t begin = 0llu;
-    for (size_t i = 1llu; i < m; i++)
+    if (_low < _high)
     {
-        if (strcmp(listStr[begin]->list[listStr[begin]->n - 1llu], listStr[i]->list[listStr[i]->n - 1llu]) != 0)
-        {
-            m = i - 1llu;
-            for (size_t j = begin; j < m; j++)
-            {
-                for (size_t z = j + 1llu; z < i; z++)
-                    if (listStr[j]->n > listStr[z]->length)
-                    {
-                        swap((void*)&listStr[j], (void*)&listStr[z]);
-                        swap((void*)&list[j], (void*)&list[z]);
-                    }
-            }
-            begin = i;
-        }
+        size_t pined = partition(_a, _b, _sizeA, _sizeB, _low, _high, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, _low, pined - 1llu, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, pined + 1llu, _high, cmp, swap);
     }
-    begin = 0llu;
-    for (size_t i = 0llu; i < m; i++)
-        for (size_t j = i + 1llu; j < list->n; j++)
-            if (strcmp(listStr[i]->list[listStr[i]->n - 1llu], listStr[j]->list[listStr[j]->n - 1llu]) != 0)
-            {
-                size_t z_m = j - 1llu;
-                for (size_t z = i; z < z_m; z++)
-                    for (size_t k = z + 1llu; k < j; k++)
-                        if (listStr[z]->n != listStr[k]->n)
-                        {
-                            func(&list, &listStr, z, k - 1llu, 0llu);
-                            z = k;
-                            k = j;
-                        }
-                i = j;
-                j = list->n;
-            }
-    return list;
 }
 
-struct INFO_S
+int _cmp(const void* _a, const void* _b)
 {
-    char* nameStr;
-    char* classStr;
-    uint64_t* dob;
-};
-
-struct LIST_S
-{
-    INFO_P* list;
-    size_t n;
-};
-
-struct STRLIST_S
-{
-    char** list;
-    size_t* length;
-    size_t n;
-};
-
-void swap(void* a, void* b)
-{
-    *(size_t*)a = *(size_t*)a ^ *(size_t*)b;
-    *(size_t*)b = *(size_t*)a ^ *(size_t*)b;
-    *(size_t*)a = *(size_t*)a ^ *(size_t*)b;
+    return *(int*)_a - *(int*)_b;
 }
 
-LIST_P func(LIST_P* list, STRLIST_P** listStr, size_t begin, size_t end, size_t index)
+void _swap(void* _a, void* _b, size_t _size)
 {
-    size_t m = end + 1llu;
-    for (size_t i = begin; i <= end; i++)
-        for (size_t j = i + 1llu; j < end; j++)
-            if (listStr[0][i]->list[index], listStr[0][j]->list[index])
-            {
-                {
-                    swap((void*)&listStr[0][i], (void*)&listStr[0][j]);
-                    swap((void*)&list[0][i], (void*)&list[0][j]);
-                }
-            }
-    if ((index + 1llu) < listStr[0][begin]->n)
-        func(list, listStr, begin, end, index + 1llu);
-    return list;
+    void* _tmp = malloc(_size);
+    memcpy(_tmp, _a, _size);
+    memcpy(_a, _b, _size);
+    memcpy(_b, _tmp, _size);
+}
+
+int main()
+{
+    int a[] = { 1,7,2,3,5,8,3,7,35,34,2,7,2 };
+    int b[] = { 1,7,2,3,5,8,3,7,35,34,2,7,2 };
+    size_t n = sizeof(a) / sizeof(int);
+    mQsort((void*)a, (void*)b, sizeof(int), sizeof(int), 0llu, n - 1llu, _cmp, _swap);
+    for (size_t i = 0; i < n; i++)
+        printf("%5d", a[i]);
+    printf("\n");
+    for (size_t i = 0; i < n; i++)
+        printf("%5d", b[i]);
+    return 0;
 }
