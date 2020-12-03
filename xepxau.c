@@ -55,8 +55,9 @@ STRLIST_P taoStrList(RECORD_P record);
 LIST_P cutStr(char* str);
 
 char* nhapString();
-
 uint64_t nhapUi64();
+int32_t cmp(const void* a, const void* b);
+void myQsort(void* _Base, size_t _Count, size_t _Size, int(*_cmp)(void* _a, void* _b), void(*_swap)(void* _a, void* _b));
 
 int main()
 {
@@ -184,6 +185,7 @@ RECORD_P hienInfoTrongRecord(RECORD_P record)
 RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record)
 {
     STRLIST_P StrList = taoStrList(record);
+    //Xep theo ten
     return record;
 }
 
@@ -212,3 +214,10 @@ uint64_t nhapUi64()
     scanf("%llu", &n);
     return n;
 }
+
+int32_t cmp(const void* a, const void* b)
+{
+    return 0;//chua xong
+}
+
+
