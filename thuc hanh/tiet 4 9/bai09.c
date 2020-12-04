@@ -1,239 +1,258 @@
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
+#define InDiaChi(x) printf("0x%016x\n", &x)
+#define COLLECT(x). ((COLLECT_P)x)->
+
+typedef struct LIST_S
+{
+    size_t n;
+    char** list;
+} LIST;
+typedef LIST* LIST_P;
+
+typedef struct STRLIST_S
+{
+    LIST_P* strList;
+    uint64_t n;
+} STRLIST;
+typedef STRLIST* STRLIST_P;
+
 
 typedef struct INFO_S
 {
     char* nameStr;
-    uint32_t dob[3llu];
     char* classStr;
+    uint64_t* dob[3];
 } INFO;
 typedef INFO* INFO_P;
 
 typedef struct RECORD_S
 {
+    INFO_P* info;
     uint64_t n;
-    INFO_P info;
 } RECORD;
 typedef RECORD* RECORD_P;
 
-typedef struct STRLIST_S
+typedef struct COLLECT_S
 {
-    char** list;
-    size_t* length;
-    size_t n;
-} STRLIST;
-typedef STRLIST* STRLIST_P;
+    RECORD_P record;
+    STRLIST_P strList;
+} COLLECT;
+typedef COLLECT* COLLECT_P;
+
+
+INFO_P taoInfo();
+INFO_P nhapInfo(INFO_P info);
+INFO_P hienInfo(INFO_P info);
+INFO_P xoaInfo(INFO_P info);
+
+RECORD_P taoRecord();
+RECORD_P taoInfoTrongRecord(RECORD_P record, size_t n);
+RECORD_P nhapInfoTrongRecord(RECORD_P record);
+RECORD_P hienInfoTrongRecord(RECORD_P record);
+RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record);
+
+STRLIST_P taoStrList(RECORD_P record);
 
 
 
-INFO_P createInfo(uint64_t n);
-INFO_P importInfo(INFO_P info);
-INFO_P deleteInfo(INFO_P info);
-INFO_P displayInfo(INFO_P info);
-RECORD_P createRecord(uint64_t n);
-RECORD_P createInfoToRecord(RECORD_P record, uint64_t n);
-RECORD_P importInfoOfRecord(RECORD_P record);
-RECORD_P deleteRecord(RECORD_P record);
-RECORD_P deleteRecordWithAllData(RECORD_P record);
-RECORD_P displayInfoOfRecord(RECORD_P record);
-RECORD_P sortInfoOfREcord(RECORD_P record);
+
+LIST_P cutStr(char* str);
+
+char* nhapString();
+uint64_t nhapUi64();
 
 
-
-STRLIST_P cutStr(char* str);
-char** createStrList(RECORD_P record);
-STRLIST_P* cutStrList(char** listStr, size_t n);
-
-uint64_t importUint64();
-uint32_t importUint32();
-char* importString();
-
-
-void show(char** list)
-{
-    for (;*list; list++)
-        puts(*list);
-}
 
 int main()
 {
-    RECORD_P record = createRecord(1llu);
-    createInfoToRecord(record, importUint64());
-    importInfoOfRecord(record);
-    displayInfoOfRecord(record);
-    return EXIT_SUCCESS;
+    RECORD_P record = taoRecord();
+    taoInfoTrongRecord(record, nhapUi64());
+    nhapInfoTrongRecord(record);
+    hienInfoTrongRecord(record);
+    return 0;
 }
 
-INFO_P createInfo(uint64_t n)
+LIST_P cutStr(char* str)
 {
-    return (INFO_P)calloc(n, sizeof(INFO));
-}
-
-INFO_P importInfo(INFO_P info)
-{
-    char str[256];
-    printf("Ho va ten\t:\t");
-    info->nameStr = importString();
-    printf("Lop\t:\t");
-    info->classStr = importString();
-    printf("Ngay sinh\n");
-    printf("Ngay\t:\t");
-    info->dob[0] = importUint32();
-    printf("Thang\t:\t");
-    info->dob[1] = importUint32();
-    printf("Nam\t:\t");
-    info->dob[2] = importUint32();
-    return info;
-}
-
-INFO_P deleteInfo(INFO_P info)
-{
-    free((void*)info->nameStr);
-    free((void*)info->nameStr);
-    free(info);
-    return info;
-}
-
-INFO_P displayInfo(INFO_P info)
-{
-    printf("---------------------------------------------------------\n");
-    printf("Ho va ten\t:\t%s\n", info->nameStr);
-    printf("Lop\t:\t%s\n", info->classStr);
-    printf("Ngay sinh\t:\t%2u%2u/%4u\n", info->dob[0], info->dob[1], info->dob[2]);
-}
-
-RECORD_P createRecord(uint64_t n)
-{
-    return (RECORD_P)calloc(n, sizeof(RECORD));
-}
-
-RECORD_P createInfoToRecord(RECORD_P record, uint64_t n)
-{
-    record->info = createInfo(n);
-    record->n = n;
-    return record;
-}
-
-RECORD_P importInfoOfRecord(RECORD_P record)
-{
-    for (uint64_t i = 0; i < record->n; i++)
-        importInfo(&record->info[i]);
-    return record;
-}
-
-RECORD_P deleteRecord(RECORD_P record)
-{
-    free((void*)record->info);
-    free((void*)record->n);
-    return record;
-}
-
-RECORD_P deleteRecordWithAllData(RECORD_P record)
-{
-    for (uint64_t i = 0llu; i < record->n; i++)
-        deleteInfo(&record->info[i]);
-    free((void*)record->info);
-    free((void*)record);
-    return record;
-}
-
-RECORD_P displayInfoOfRecord(RECORD_P record)
-{
-    for (uint64_t i = 0llu; i < record->n; i++)
-        displayInfo(&record->info[i]);
-    return record;
-}
-
-RECORD_P sortInfoOfREcord(RECORD_P record)
-{
-    char** listStr = createStrList(record);
-    STRLIST_P* list = cutStrList(listStr, record->n);
-    size_t m = record->n - 1llu;
-    for (size_t i = 0llu; i < m; i++)
-        for (size_t j = i + 1llu; j < record->n; j++)
-            if (strcmp(list[i]->list[list[i]->n], list[j]->list[list[j]->n]) > 0)
-            {
-                
-            }
-    return record;
-}
-
-char* importString()
-{
-    char* str = (char*)calloc(256llu, sizeof(char));
-    fflush(stdin);
-    fgets(str, 256, stdin);
-    return (char*)realloc(str, sizeof(char) * (strlen(str) + 1llu));
-}
-
-uint64_t importUint64()
-{
-    printf("uint64>");
-    uint64_t n;
-    scanf("%llu", &n);
-    return n;
-}
-
-uint32_t importUint32()
-{
-    printf("uint32>");
-    uint64_t n;
-    scanf("%u", &n);
-    return n;
-}
-
-STRLIST_P cutStr(char* str)
-{
-    STRLIST_P list = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
+    LIST_P list = (LIST_P)calloc(1llu, sizeof(LIST));
     list->list = (char**)calloc(256llu, sizeof(char*));
-    list->length = (size_t*)calloc(256llu, sizeof(size_t));
+
     char* begin = NULL, * end = NULL;
     bool cut = false;
     do
         switch (*str)
         {
-        case ' ':
-        case '\0':
+        case  ' ':
         case '\n':
-            break;
+        case '\0':
             if (cut)
             {
+                end = str;
+                list->list[list->n] = (char*)calloc(end - begin + 1llu, sizeof(char));
+                strncpy(list->list[list->n], begin, end - begin);
                 cut = false;
-                end = cut;
-                list->list[list->n] = (char*)calloc(end - begin + 2llu, sizeof(char));
-                strncpy(list->list[list->n], &begin, end - begin + 1llu);
-                list->length[list->n] = strlen(list->list[list->n]);
+                ///////////////////////////////////////////////
+                printf("end\t=\t");
+                InDiaChi(*str);
+                printf("length\t=\t%llu\n", end - begin);
+                printf(">>>>\t\t%s\n", list->list[list->n]);
+                printf("-------------------------------------\n");
+                ///////////////////////////////////////////////
                 list->n++;
             }
+            break;
         default:
             if (!cut)
             {
                 cut = true;
                 begin = str;
+                printf("begin\t=\t");
+                InDiaChi(*str);
             }
             break;
         }
-    while (++str);
-    list->list = (char**)realloc(list->list, sizeof(char*) * list->n);
-    list->length = (size_t*)realloc(list->length, sizeof(size_t) * list->n);
+    while (*(str++));
+    list->list = (char**)realloc((void*)list->list, sizeof(char*) * list->n);
+    ///////////////////////////////////////////////
+    printf("list\t=\t");
+    InDiaChi(*list);
+    printf("list.n\t=\t%llu\n", list->n);
+    printf("-------------------------------------\n");
+    ///////////////////////////////////////////////
     return list;
 }
 
-STRLIST_P* cutStrList(char** listStr, size_t n)
+INFO_P taoInfo()
 {
-    STRLIST_P* list = (STRLIST_P)calloc(n, sizeof(STRLIST_P));
-    for (size_t i = 0llu; i < n; i++)
-        list[i] = cutStr(listStr[i]);
-    return list;
+    return (INFO_P)calloc(1llu, sizeof(INFO));
 }
 
-char** createStrList(RECORD_P record)
+INFO_P nhapInfo(INFO_P info)
 {
-    char** list = (char*)calloc(record->n, sizeof(char*));
+    printf("Ho va ten\t:\t");
+    info->nameStr = nhapString();
+    printf("Lop\t\t:\t");
+    info->classStr = nhapString();
+    printf("Ngay sinh\n");
+    printf("Ngay\t\t:\t");
+    info->dob[0] = nhapUi64();
+    printf("Thang\t\t:\t");
+    info->dob[1] = nhapUi64();
+    printf("Nam\t\t:\t");
+    info->dob[2] = nhapUi64();
+    return info;
+}
+
+INFO_P hienInfo(INFO_P info)
+{
+    printf("Ho va ten\t:\t%s", info->nameStr);
+    printf("Lop\t\t:\t%s", info->classStr);
+    printf("Ngay sinh\t:\t%02llu/%02llu/%04llu\n", info->dob[0], info->dob[1], info->dob[2]);
+    printf("-------------------------------------\n");
+    return info;
+}
+
+INFO_P xoaInfo(INFO_P info)
+{
+    free((void*)info->classStr);
+    free((void*)info->nameStr);
+    free((void*)info);
+    return info;
+}
+
+RECORD_P taoRecord()
+{
+    return (RECORD_P)calloc(1llu, sizeof(RECORD));
+}
+
+RECORD_P taoInfoTrongRecord(RECORD_P record, size_t n)
+{
+    record->info = (INFO_P*)calloc(n, sizeof(INFO_P));
+    record->n = n;
+    return record;
+}
+
+RECORD_P nhapInfoTrongRecord(RECORD_P record)
+{
     for (size_t i = 0llu; i < record->n; i++)
-        list[i] = record->info->nameStr;
-    return list;
+        record->info[i] = nhapInfo(taoInfo());
+    return record;
+}
+
+RECORD_P hienInfoTrongRecord(RECORD_P record)
+{
+    for (size_t i = 0llu; i < record->n; i++)
+        hienInfo(record->info[i]);
+    return record;
+}
+
+RECORD_P xepInfoTheoTenTrongRecord(RECORD_P record)
+{
+    STRLIST_P StrList = taoStrList(record);
+    //Xep theo ten
+    return record;
+}
+
+STRLIST_P taoStrList(RECORD_P record)
+{
+    STRLIST_P StrList = (STRLIST_P)calloc(1llu, sizeof(STRLIST));
+    StrList->strList = (LIST_P*)calloc(record->n, sizeof(LIST_P));
+    for (size_t i = 0llu; i < record->n; i++)
+        StrList->strList[i] = cutStr(record->info[i]->nameStr);
+    return StrList;
+}
+
+char* nhapString()
+{
+    char* str = (char*)calloc(256llu, sizeof(char));
+    fseek(stdin, 0l, SEEK_SET);
+    fgets(str, 256, stdin);
+    return (char*)realloc((void*)str, sizeof(char) * (1llu + strlen(str)));
+}
+
+uint64_t nhapUi64()
+{
+    uint64_t n;
+    scanf("%llu", &n);
+    return n;
+}
+
+size_t partition(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void*, const void*), void (*swap)(void*, void*))
+{
+    void* pivot = (size_t)_a + _sizeA * _high;
+    size_t i = _low - 1llu;
+    size_t m = _high - 1llu;
+    for (size_t j = _low; j < m; j++)
+        if (cmp(pivot, (size_t)_a + _sizeA * j))
+        {
+            i++;
+            swap((size_t)_a + _sizeA * i, (size_t)_a + _sizeA * j);
+            swap((size_t)_b + _sizeB * i, (size_t)_b + _sizeB * j);
+        }
+    swap((size_t)_a + _sizeA * (i + 1llu), (size_t)_a + _sizeA * _high);
+    swap((size_t)_b + _sizeB * (i + 1llu), (size_t)_b + _sizeB * _high);
+    return i;
+}
+
+void mQsort(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_t _high, bool (*cmp)(const void* _a, const void* _b), void (*swap)(void* _a, void* _b))
+{
+    if (_low < _high)
+    {
+        size_t pined = partition(_a, _b, _sizeA, _sizeB, _low, _high, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, _low, pined - 1llu, cmp, swap);
+        mQsort(_a, _b, _sizeA, _sizeB, pined + 1llu, _high, cmp, swap);
+    }
+}
+
+void swapF(void* a, void* b, size_t size)
+{
+    void* tmp = malloc(size);
+    memcpy(tmp, a, size);
+    memcpy(a, b, size);
+    memcpy(b, tmp, size);
+    free(tmp);
 }
