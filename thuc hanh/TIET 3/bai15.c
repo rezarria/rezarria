@@ -1,27 +1,34 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
 
-void swap(float* a, float* b)
-{
-    *(uint32_t*)a = *(uint32_t*)a ^ *(uint32_t*)b;
-    *(uint32_t*)b = *(uint32_t*)a ^ *(uint32_t*)b;
-    *(uint32_t*)a = *(uint32_t*)a ^ *(uint32_t*)b;
-}
-
-float nhapFloat(char c)
-{
-    float n;
-    printf("Nhap so thuc %c : ", c);
-    scanf("%f", &n);
-    return n;
-}
+float nhapFloat();
+void swap(void* _a, void* _b, size_t _size);
 
 int main()
 {
-    float a = nhapFloat('a');
-    float b = nhapFloat('b');
-    swap(&a, &b);
-    printf("a = %f\nb = %05f\n", a, b);
+    printf("Nhap lan luat a va b\n");
+    float a = nhapFloat();
+    float b = nhapFloat();
+    swap(&a, &b, sizeof(float));
+    printf("a = %6.2f\nb = %6.2f\n", a, b);
     return EXIT_SUCCESS;
+}
+
+void swap(void* _a, void* _b, size_t _size)
+{
+    void* tmp = (uintptr_t)malloc(_size);
+    memmove(tmp, _a, _size);
+    memmove(_a, _b, _size);
+    memmove(_b, tmp, _size);
+}
+
+float nhapFloat()
+{
+    float n;
+    printf("float> ");
+    scanf("%f", &n);
+    return n;
 }

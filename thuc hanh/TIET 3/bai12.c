@@ -10,51 +10,55 @@ typedef struct uint32_arr
     uint32_t* arr;
 } uint32_arr_t;
 
-void nap(uint32_arr_t* arr, uint32_t n);
-uint32_arr_t* uoc(uint32_t n);
-uint32_t tongMang(uint32_arr_t* arr);
-bool soHoanHao(uint32_t n);
+
+uint32_t        nhapUi32();
+void            napMang(uint32_arr_t* arr, uint32_t n);
+uint32_arr_t* timUoc(uint32_t n);
+uint32_t        tinhTongMang(uint32_arr_t* arr);
+bool            laSoHoanHao(uint32_t n);
+void            thongBao(uint32_t n);
 
 
-int main()
+int32_t main()
 {
-    uint32_t n;
     printf("Nhap so nguyen duong n : ");
-    scanf("%u", &n);
-    printf("%u\n", n);
-    if (soHoanHao(n))
-        printf("La so hoan hao\n");
-    else
-    {
-        printf("Khong phai la so hoan hao\n");
-    }
-    return 0;
+    uint32_t n = nhapUi32();
+    thongBao(n);
+    return EXIT_SUCCESS;
 }
 
-void nap(uint32_arr_t* arr, uint32_t n)
+uint32_t nhapUi32()
+{
+    uint32_t n;
+    fputs("uint32> ", stdout);
+    scanf("%u", &n);
+    return n;
+}
+
+void napMang(uint32_arr_t* arr, uint32_t n)
 {
     arr->n++;
     arr->arr = (uint32_t*)realloc(arr->arr, 4llu * arr->n);
     arr->arr[arr->n - 1llu] = n;
 }
 
-uint32_arr_t* uoc(uint32_t n)
+uint32_arr_t* timUoc(uint32_t n)
 {
     uint32_arr_t* arr = (uint32_arr_t*)malloc(sizeof(uint32_arr_t));
     arr->n = 0llu;
     arr->arr = NULL;
-    nap(arr, 1u);
+    napMang(arr, 1u);
     uint32_t moc = sqrt(n);
     for (uint32_t i = moc; i > 1u; i--)
         if (n % i == 0u)
         {
-            nap(arr, i);
-            nap(arr, n / i);
+            napMang(arr, i);
+            napMang(arr, n / i);
         }
     return arr;
 }
 
-uint32_t tongMang(uint32_arr_t* arr)
+uint32_t tinhTongMang(uint32_arr_t* arr)
 {
     uint32_t t = 0u;
     for (size_t i = 0llu; i < arr->n; i++)
@@ -62,7 +66,18 @@ uint32_t tongMang(uint32_arr_t* arr)
     return t;
 }
 
-bool soHoanHao(uint32_t n)
+bool laSoHoanHao(uint32_t n)
 {
-    return (tongMang(uoc(n)) == n);
+    return (tinhTongMang(timUoc(n)) == n);
+}
+
+
+void thongBao(uint32_t n)
+{
+    if (laSoHoanHao(n))
+        printf("La so hoan hao\n");
+    else
+    {
+        printf("Khong phai la so hoan hao\n");
+    }
 }

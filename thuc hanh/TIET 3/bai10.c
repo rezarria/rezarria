@@ -1,61 +1,44 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
 
-typedef struct observer
+uint32_t importUi32();
+char* convertDexToBin(uint32_t n);
+void displayResult(char* bin);
+
+int32_t main()
 {
-    uint64_t n;
-    bool bit[64];
-    uint8_t p;
-} observerT;
-
-observerT* nhapNDuong();
-observerT* decToBin(observerT* observer);
-observerT* printfResult(observerT* observerT);
-void clean(observerT* observer);
-
-int main()
-{
-    clean(printfResult(decToBin(nhapNDuong())));
+    uint32_t n = importUi32();
+    char* bin = convertDexToBin(n);
+    displayResult(bin);
     return EXIT_SUCCESS;
 }
 
-observerT* nhapNDuong()
+uint32_t importUi32()
 {
-    observerT* observer = (observerT*)malloc(sizeof(observerT));
-    observer->n = 0llu;
-    observer->p = 64;
-    while (observer->n < 1llu)
+    uint32_t n;
+    fputs("> ", stdout);
+    scanf("%u", &n);
+    return n;
+}
+
+char* convertDexToBin(uint32_t n)
+{
+    char* bin = (char*)malloc(sizeof(char) * 33llu);
+    bin[32] = '\0';
+    for (int8_t i = 31; i > -1; i--)
     {
-        printf("Nhap n : ");
-        scanf("%llu", &observer->n);
+        bin[i] = '0';
+        if (n)
+        {
+            bin[i] += n % 2;
+            n /= 2;
+        }
     }
-    return observer;
+    return bin;
 }
 
-observerT* decToBin(observerT* observer)
+void displayResult(char* bin)
 {
-    uint64_t n = observer->n;
-    while (n)
-    {
-        observer->p--;
-        observer->bit[observer->p] = n % 2llu;
-        n /= 2llu;
-    }
-    return observer;
-}
-
-observerT* printfResult(observerT* observer)
-{
-    printf("%5llu\t", observer->n);
-    for (uint8_t i = observer->p; i < 64; i++)
-        printf("%d", observer->bit[i]);
-    printf("\n");
-    return observer;
-}
-
-void clean(observerT* observer)
-{
-    free(observer);
+    printf("> %s", bin);
 }

@@ -1,90 +1,59 @@
 #include <stdio.h>
-#include <stdbool.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <math.h>
+#include <stdbool.h>
 
-typedef struct
+uint32_t nhapUi32();
+bool laPrime(uint32_t n);
+void hienThi(uint32_t n);
+
+int32_t main()
 {
-    uint64_t n;
-    bool cons;
-} observerT;
 
-uint64_t makeOdd(uint64_t n);
-observerT* importN();
-observerT* isPrime(observerT* observer);
-observerT* printfResult(observerT* observer);
-void clean(observerT* observer);
-
-int main()
-{
-    clean(printfResult(isPrime(importN())));
+    uint32_t n = nhapUi32();
+    hienThi(n);
     return EXIT_SUCCESS;
 }
 
-uint64_t makeOdd(uint64_t n)
+uint32_t nhapUi32()
 {
-    return (n % 2llu) ? (n) : (n - 1llu);
+    uint32_t n;
+    fputs("> ", stdout);
+    scanf("%u", &n);
+    return n;
 }
 
-observerT* importN()
+bool laPrime(uint32_t n)
 {
-    observerT* observer = (observerT*)malloc(sizeof(observerT));
-    observer->n = 0llu;
-    while (observer->n < 1llu)
+    bool check = true;
+    switch (n)
     {
-        printf("Nhap n : ");
-        scanf("%llu", &observer->n);
+    case 2:
+    case 3:
+    case 5:
+    case 7:
+    case 11:
+        break;
+    default:
+        if (n % 2)
+        {
+            for (uint32_t i = sqrt(n); i > 2; i--)
+                if ((n % i) == 0)
+                {
+                    check = false;
+                    break;
+                }
+        }
+        else check = false;
     }
-    return observer;
+    return check;
 }
 
-observerT* isPrime(observerT* observer)
+void hienThi(uint32_t n)
 {
-    if (observer->n % 2llu)
-        switch (observer->n)
-        {
-        case 1llu:
-            observer->cons = false;
-        case 2llu:
-        case 3llu:
-        case 5llu:
-        case 7llu:
-        case 11llu:
-            observer->cons = true;
-            break;
-        default:
-        {
-            uint64_t m = sqrtl(observer->n);
-            if (observer->n % m)
-                for (uint64_t i = makeOdd(observer->n); i > 2llu; i -= 2llu)
-                    if (observer->n % i)
-                    {
-                        observer->cons = false;
-                        break;
-                    }
-                    else
-                        observer->cons = false;
-            observer->cons = true;
-            break;
-        }
-        }
+    if (laPrime(n))
+        printf("> %u la so prime!\n", n);
     else
-        observer->cons = false;
-    return observer;
-}
-
-observerT* printfResult(observerT* observer)
-{
-    printf("%llu", observer->n);
-    if (observer->cons)
-        printf(" la so nguyen to\n");
-    else
-        printf("khong phai la so nguyen to\n");
-    return observer;
-}
-
-void clean(observerT* observer)
-{
-    free(observer);
+        printf("> %u khong phai la so prime!\n", n);
 }
