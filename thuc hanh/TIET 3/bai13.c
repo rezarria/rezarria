@@ -4,20 +4,20 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-float nhapFloat();
-float* nhapFloatN(uint64_t n);
-bool laCanhTamGiac(float a, float b, float c);
-void thongBao(bool dieuKien);
+float   importFloat();
+float*  importFloatN(uint64_t n);
+bool    isTriAngle(float a, float b, float c);
+void    display(bool dieuKien);
 
-int main()
+int32_t main()
 {
     printf("Nhap lan luot cac so a, b, c\n");
-    float* canh = nhapFloatN(3llu);
-    thongBao(laCanhTamGiac(canh[0], canh[1], canh[2]));
+    float* canh = importFloatN(3llu);
+    display(isTriAngle(canh[0], canh[1], canh[2]));
     return EXIT_SUCCESS;
 }
 
-float nhapFloat()
+float importFloat()
 {
     float f;
     printf("float> ");
@@ -25,20 +25,20 @@ float nhapFloat()
     return f;
 }
 
-float* nhapFloatN(uint64_t n)
+float* importFloatN(uint64_t n)
 {
     float* f = (float*)malloc(sizeof(float) * n);
     for (uint64_t i = 0llu; i < n; i++)
-        f[i] = nhapFloat();
+        f[i] = importFloat();
     return f;
 }
 
-bool laCanhTamGiac(float a, float b, float c)
+bool isTriAngle(float a, float b, float c)
 {
     return a > fabsf(b - c);
 }
 
-void thongBao(bool dieuKien)
+void display(bool dieuKien)
 {
     if (dieuKien)
         printf("La tam giac!\n");

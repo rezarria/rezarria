@@ -4,11 +4,11 @@
 
 int32_t importN();
 float tongChia(int32_t n);
-void inTongChia(float n);
+void displaySumOfDivine(float n);
 
 int main()
 {
-	inTongChia(tongChia(importN()));
+	displaySumOfDivine(tongChia(importN()));
 	return EXIT_SUCCESS;
 }
 
@@ -31,7 +31,7 @@ float tongChia(int32_t n)
 	return s;
 }
 
-void inTongChia(float n)
+void displaySumOfDivine(float n)
 {
 	printf("T cua 1 + ... +1/n = %d", n);
 }

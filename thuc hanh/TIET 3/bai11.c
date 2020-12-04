@@ -4,19 +4,19 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-uint32_t nhapUi32();
-bool laPrime(uint32_t n);
-void hienThi(uint32_t n);
+uint32_t importUi32();
+bool isPrime(uint32_t n);
+void display(uint32_t n);
 
 int32_t main()
 {
 
-    uint32_t n = nhapUi32();
-    hienThi(n);
+    uint32_t n = importUi32();
+    display(n);
     return EXIT_SUCCESS;
 }
 
-uint32_t nhapUi32()
+uint32_t importUi32()
 {
     uint32_t n;
     fputs("> ", stdout);
@@ -24,7 +24,7 @@ uint32_t nhapUi32()
     return n;
 }
 
-bool laPrime(uint32_t n)
+bool isPrime(uint32_t n)
 {
     bool check = true;
     switch (n)
@@ -50,9 +50,9 @@ bool laPrime(uint32_t n)
     return check;
 }
 
-void hienThi(uint32_t n)
+void display(uint32_t n)
 {
-    if (laPrime(n))
+    if (isPrime(n))
         printf("> %u la so prime!\n", n);
     else
         printf("> %u khong phai la so prime!\n", n);

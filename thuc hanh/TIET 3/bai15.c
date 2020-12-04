@@ -4,14 +4,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-float nhapFloat();
-void swap(void* _a, void* _b, size_t _size);
+float   importFloat();
+void    swap(void* _a, void* _b, size_t _size);
 
 int main()
 {
     printf("Nhap lan luat a va b\n");
-    float a = nhapFloat();
-    float b = nhapFloat();
+    float a = importFloat();
+    float b = importFloat();
     swap(&a, &b, sizeof(float));
     printf("a = %6.2f\nb = %6.2f\n", a, b);
     return EXIT_SUCCESS;
@@ -25,7 +25,7 @@ void swap(void* _a, void* _b, size_t _size)
     memmove(_b, tmp, _size);
 }
 
-float nhapFloat()
+float importFloat()
 {
     float n;
     printf("float> ");

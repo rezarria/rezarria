@@ -63,14 +63,14 @@ STRLIST_P taoStrList(RECORD_P record);
 LIST_P cutStr(char* str);
 
 char* nhapString();
-uint64_t nhapUi64();
+uint64_t importUi64();
 
 
 
 int main()
 {
     RECORD_P record = taoRecord();
-    taoInfoTrongRecord(record, nhapUi64());
+    taoInfoTrongRecord(record, importUi64());
     nhapInfoTrongRecord(record);
     hienInfoTrongRecord(record);
     return 0;
@@ -139,11 +139,11 @@ INFO_P nhapInfo(INFO_P info)
     info->classStr = nhapString();
     printf("Ngay sinh\n");
     printf("Ngay\t\t:\t");
-    info->dob[0] = nhapUi64();
+    info->dob[0] = importUi64();
     printf("Thang\t\t:\t");
-    info->dob[1] = nhapUi64();
+    info->dob[1] = importUi64();
     printf("Nam\t\t:\t");
-    info->dob[2] = nhapUi64();
+    info->dob[2] = importUi64();
     return info;
 }
 
@@ -214,7 +214,7 @@ char* nhapString()
     return (char*)realloc((void*)str, sizeof(char) * (1llu + strlen(str)));
 }
 
-uint64_t nhapUi64()
+uint64_t importUi64()
 {
     uint64_t n;
     scanf("%llu", &n);

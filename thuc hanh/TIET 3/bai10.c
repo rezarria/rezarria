@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
-uint32_t importUi32();
-char* convertDexToBin(uint32_t n);
-void displayResult(char* bin);
+uint32_t    importUi32();
+char*       convertDexToBin(uint32_t n);
+void        displayResult(char* bin);
 
 int32_t main()
 {
@@ -17,7 +17,7 @@ int32_t main()
 uint32_t importUi32()
 {
     uint32_t n;
-    fputs("> ", stdout);
+    fputs("uint32> ", stdout);
     scanf("%u", &n);
     return n;
 }
