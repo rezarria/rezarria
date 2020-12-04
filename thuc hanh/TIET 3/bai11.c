@@ -38,7 +38,7 @@ bool isPrime(uint32_t n)
     default:
         if (n % 2)
         {
-            for (uint32_t i = sqrt(n); i > 2; i--)
+            for (uint32_t i = sqrt(n); i > 2u; i--)
                 if ((n % i) == 0)
                 {
                     check = false;
