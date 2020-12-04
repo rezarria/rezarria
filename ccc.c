@@ -25,7 +25,7 @@ void mQsort(void* _a, void* _b, size_t _sizeA, size_t _sizeB, size_t _low, size_
 {
     if (_low < _high)
     {
-        size_t pined = partition(_a, _b, _sizeA, _sizeB, _low, _high, cmp, swap);
+        size_t pined = partition(_ad, _b, _sizeA, _sizeB, _low, _high, cmp, swap);
         mQsort(_a, _b, _sizeA, _sizeB, _low, pined - 1llu, cmp, swap);
         mQsort(_a, _b, _sizeA, _sizeB, pined + 1llu, _high, cmp, swap);
     }
