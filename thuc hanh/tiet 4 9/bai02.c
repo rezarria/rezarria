@@ -20,9 +20,9 @@
                     Dùng trỏ của RECORD_P để lưu lại địa chỉ, thay vì tạo mới gây tốn tài nguyên
     REPORT_P    :   Là con trỏ của REPORT
 */
-typedef struct RECORD_S
+typedef struct INFO_S
 {
-    uint64_t id;
+    uint64_t idStudent;
     char* name[__max_length_of_name];
     uint32_t dob[3];
     char* sex[__max_length_of_name];
@@ -31,7 +31,7 @@ typedef struct RECORD_S
 } RECORD;
 typedef RECORD* RECORD_P;
 
-typedef struct MGR_S
+typedef struct LIST_S
 {
     uint64_t n;
     RECORD_P record;
@@ -62,7 +62,7 @@ typedef REPORT* REPORT_P;
 */
 
 MGR_P taoMgr();
-MGR_P taoRecord(MGR_P mgr);
+MGR_P createInfoInMGR(MGR_P mgr);
 MGR_P nhapThongTin(MGR_P mgr);
 REPORT_P fill(MGR_P mgr, float score);
 REPORT_P taoReport();
@@ -74,7 +74,7 @@ int main()
 {
     //Tạo MGR -> Tạo RECORD trong MGR đó theo người dùng -> Nhập thông tin RECORD của MGR đó
     //-> Lọc các RECORD của MGR đó vào REPORT -> In kết quả trong REPORT đó ra
-    hienReport(fill(nhapThongTin(taoRecord(taoMgr())), 15.0f));
+    hienReport(fill(nhapThongTin(createInfoInMGR(taoMgr())), 15.0f));
     return EXIT_SUCCESS;
 }
 
@@ -83,7 +83,7 @@ MGR_P taoMgr()
     MGR_P mgr = (MGR_P)calloc(1ull, sizeof(MGR));
 }
 
-MGR_P taoRecord(MGR_P mgr)
+MGR_P createInfoInMGR(MGR_P mgr)
 {
     printf("Nhap so thi sinh : ");
     scanf("%llu", &mgr->n);
@@ -101,7 +101,7 @@ MGR_P nhapThongTin(MGR_P mgr)
         p->t = 0.0f;
         printf("Ho so thu %5llu\n", i);
         printf("Ma so bao danh\t:\t");
-        scanf("%llu", &p->id);
+        scanf("%llu", &p->idStudent);
         printf("Ho va ten\t:\t");
         fflush(stdin);
         fgets(p->name, __max_length_of_name, stdin);
@@ -142,7 +142,7 @@ void hienRecord(MGR_P mgr)
     {
         RECORD_P p = &mgr->record[i];
         printf("------------------------------\n");
-        printf("So bao danh\t:\t%5llu\n", p->id);
+        printf("So bao danh\t:\t%5llu\n", p->idStudent);
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Ngay sinh\t:\t%02u/%02u/%04u\n", p->dob[0], p->dob[1], p->dob[2]);
         printf("Gioi tinh\t:\t%6s", p->sex);
@@ -159,7 +159,7 @@ void hienReport(REPORT_P report)
     {
         RECORD_P p = report->record[i];
         printf("------------------------------\n");
-        printf("So bao danh\t:\t%5llu\n", p->id);
+        printf("So bao danh\t:\t%5llu\n", p->idStudent);
         printf("Ho va ten\t:\t%6s", p->name);
         printf("Ngay sinh\t:\t%02u/%02u/%04u\n", p->dob[0], p->dob[1], p->dob[2]);
         printf("Gioi tinh\t:\t%6s", p->sex);

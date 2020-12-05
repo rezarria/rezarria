@@ -18,7 +18,7 @@ typedef struct TIME_S
 } TIME;
 typedef TIME* TIME_P;
 
-typedef struct MGR_S
+typedef struct LIST_S
 {
 	uint64_t n;
 	TIME_P* time;

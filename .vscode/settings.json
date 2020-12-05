@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "*.tcc": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "xutility": "c",
+        "xstddef": "c",
+        "cmath": "c",
+        "type_traits": "c",
+        "utility": "c"
     }
 }

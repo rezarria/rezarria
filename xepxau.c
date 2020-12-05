@@ -29,7 +29,7 @@ typedef struct INFO_S
 } INFO;
 typedef INFO* INFO_P;
 
-typedef struct RECORD_S
+typedef struct INFO_S
 {
     INFO_P* info;
     uint64_t n;

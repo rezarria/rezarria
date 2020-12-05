@@ -9,7 +9,7 @@ typedef struct COMPLEX_S
 } COMPLEX;
 typedef COMPLEX* COMPLEX_P;
 
-typedef struct MGR_S
+typedef struct LIST_S
 {
     uint64_t n;
     COMPLEX_P complex;
