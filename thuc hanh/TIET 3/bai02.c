@@ -1,34 +1,59 @@
 #include <stdio.h>
 
-int importN();
-int tongLe(int n);
-void inTongLe(int n);
+int importI32();
+int importI32_f(FILE* in);
+int sumOdd(int n);
+void printSum_f(int n, FILE* out);
+void printSum(int n);
 
 int main()
 {
-	inTongLe(tongLe(importN()));
-	return 0;
+    FILE* file = fopen("bai02.inp", "r");
+    int n = importI32_f(file);
+    printf("n\t=\t%d\n", n);
+    fclose(file);
+    n = sumOdd(n);
+    printSum(n);
+    file = fopen("bai02.out", "w");
+    printSum_f(n, file);
+    return 0;
 }
 
 //----------------------------
 
-int importN()
+int importI32_f(FILE* in)
 {
-	int n;
-	printf("Nhap n : ");
-	scanf("%d", &n);
-	return n;
+    int n;
+    if (in == stdin)
+        printf("int32> ");
+    fscanf(in, "%d", &n);
+    return n;
 }
 
-int tongLe(int n)
+int importI32()
 {
-	int i, s = 0;
-	for(i = 1; i <= n; i++)
-		s += 2 * i;
-	return s;
+    return importI32(stdin);
 }
 
-void inTongLe(int n)
+int sumOdd(int n)
 {
-	printf("T cua 1 + ... + (2*n + 1) = %d", n);
+    int i, s = 0;
+    n++;
+    for (i = 1; i < n; i++)
+        s += 2 * i;
+    return s;
 }
+
+void printSum_f(int n, FILE* out)
+{
+    if (out == stdout)
+        printf("T cua 1 + ... + (2*n) = ");
+    fprintf(out, "%d", n);
+}
+
+void printSum(int n)
+{
+    printSum_f(n, stdout);
+}
+
+

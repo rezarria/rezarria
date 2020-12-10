@@ -3,22 +3,31 @@
 #include <stdint.h>
 
 uint32_t    importUi32();
+uint32_t    importUI32_f(FILE* in);
 char*       convertDexToBin(uint32_t n);
 void        displayResult(char* bin);
 
 int32_t main()
 {
-    uint32_t n = importUi32();
+    FILE* file = fopen("bai10.inp", "r");
+    uint32_t n = importUi32_f(file);
+    fclose(file);
     char* bin = convertDexToBin(n);
     displayResult(bin);
     return EXIT_SUCCESS;
 }
 
-uint32_t importUi32()
+uint32_t importUI32()
 {
-    uint32_t n;
-    fputs("uint32> ", stdout);
-    scanf("%u", &n);
+    return importUI32(stdin);
+}
+
+uint32_t importUI32_f(FILE* in)
+{
+    int32_t n;
+    if (in == stdin)
+        printf("uint32> ");
+    fscanf(in, "%u", &n);
     return n;
 }
 

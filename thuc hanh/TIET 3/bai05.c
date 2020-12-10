@@ -2,25 +2,64 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-
-void ptb1(float a, float b);
+int32_t importI32();
+int32_t importI32_f(FILE* in);
+void xLinear(float a, float b);
+void xLinear_f(float a, float b, FILE* out);
 
 int main()
 {
-	int32_t a, b;
-	printf("Nhap a, b : ");
-	scanf("%d%d", &a, &b);
-	ptb1(a, b);
+	FILE* file = fopen("bai05.inp", "r");
+	int32_t a = importI32(file), b = importI32(file);
+	fclose(file);
+	printf("a = %d\n", a);
+	printf("b = %d\n", b);
+	file = fopen("bai05.out", "w");
+	xLinear_f(a, b, file);
+	fcose(file);
 	return EXIT_SUCCESS;
 }
 
-void ptb1(float a, float b)
+void xLinear(float a, float b)
+{
+	xLinear_f(a, b, stdout);
+}
+
+void xLinear_f(float a, float b, FILE* out)
 {
 	if (a == 0.0f)
 		if (b == 0.0f)
-			printf("Vo so nhiem\n");
+		{
+			fprintf(out, "Vo so nhiem\n");
+			if (out != stdout)
+				printf("Vo so nhiem\n");
+		}
 		else
-			printf("Vo nghiem\n");
+		{
+			fprintf(out, "Vo nghiem\n");
+			if (out != stdout)
+				printf("Vo nghiem\n");
+		}
 	else
-		printf("Nghiem cua pt la %5:3f\n", -b / a);
+	{
+		float n = -b / a;
+		fprintf(out, "Nghiem cua pt la %5:3f\n", n);
+		if (out != stdout)
+			printf("Nghiem cua pt la %5:3f\n", n);
+	}
+}
+
+int32_t importN()
+{
+	return importN(stdin);
+}
+
+
+int32_t importI32_f(FILE* in)
+{
+	int32_t n;
+	if (in == stdin)
+		printf("int32> ");
+	fscanf(in, "%d", &n);
+	return n;
 }
