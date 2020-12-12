@@ -116,3 +116,16 @@ bool isPrime(uint32_t n)
     }
     return check;
 }
+
+char* getLine(FILE* input)
+{
+    int32_t length = 0llu;
+    do
+        length++;
+    while (fgetc(input));
+    char* str = (char*)malloc(sizeof(char) * length);
+    fseek(input, SEEK_CUR, -length);
+    for (int i = 0; i < length; i++)
+        str[i] = (char)fgetc(input);
+    return str;
+}
