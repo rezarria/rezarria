@@ -5,15 +5,20 @@
 #include <stdint.h>
 
 float   importFloat();
+float   importFloat_f(FILE* in);
 void    swap(void* _a, void* _b, size_t _size);
 
 int main()
 {
-    printf("Nhap lan luat a va b\n");
-    float a = importFloat();
-    float b = importFloat();
+    FILE* input = fopen("bai5.inp", "r");
+    FILE* output = fopen("bai15.out", "w");
+    float a = importFloat_f(input);
+    float b = importFloat_f(input);
     swap(&a, &b, sizeof(float));
     printf("a = %6.2f\nb = %6.2f\n", a, b);
+    fprintf(output, "%f%f", a, b);
+    fclose(input);
+    fclose(output);
     return EXIT_SUCCESS;
 }
 
@@ -27,8 +32,14 @@ void swap(void* _a, void* _b, size_t _size)
 
 float importFloat()
 {
-    float n;
-    printf("float> ");
-    scanf("%f", &n);
-    return n;
+    return importFloat_f(stdin);
+}
+
+float importFloat_f(FILE* in)
+{
+    float f;
+    if (in == stdin)
+        printf("float> ");
+    fscanf(in, "%f", &f);
+    return f;
 }

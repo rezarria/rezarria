@@ -21,10 +21,10 @@ OBSERVER* OBcreate();
 OBSERVER* OBimportNM(OBSERVER* observer);
 OBSERVER* OBcreateArray(OBSERVER* observer);
 OBSERVER* OBimportArray(OBSERVER* observer);
-OBSERVER* printfResult(OBSERVER* oberver);
+OBSERVER* OBprintfResult(OBSERVER* oberver);
 OBSERVER* OBimportNM_f(OBSERVER* observer, FILE* in);
 OBSERVER* OBimportArray_f(OBSERVER* observer, FILE* in);
-OBSERVER* printfResult_f(OBSERVER* observer, FILE* out);
+OBSERVER* OBprintfResult_f(OBSERVER* observer, FILE* out);
 void clean(OBSERVER* observerT);
 int32_t importI32();
 int32_t importI32_f(FILE* in);
@@ -42,7 +42,7 @@ int32_t main()
     OBimportNM_f(observer, in);
     OBcreateArray(observer);
     OBimportArray_f(observer, in);
-    printfResult_f(observer, out);
+    OBprintfResult_f(observer, out);
 
     fclose(in);
     fclose(out);
@@ -108,7 +108,7 @@ OBSERVER* OBimportNM_f(OBSERVER* observer, FILE* in)
     return observer;
 }
 
-OBSERVER* printfResult_f(OBSERVER* observer, FILE* out)
+OBSERVER* OBprintfResult_f(OBSERVER* observer, FILE* out)
 {
 
     if (out != stdout)
@@ -157,9 +157,9 @@ OBSERVER* OBimportArray(OBSERVER* observer)
     return OBimportArray_f(observer, stdin);
 }
 
-OBSERVER* printfResult(OBSERVER* observer)
+OBSERVER* OBprintfResult(OBSERVER* observer)
 {
-    return printfResult_f(observer, stdout);
+    return OBprintfResult_f(observer, stdout);
 }
 
 void clean(OBSERVER* observer)
