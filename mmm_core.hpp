@@ -15,14 +15,24 @@ private:
     void reSize();
     void importValue();
     void importValue(std::fstream& input);
+    void importValue(size_t i, size_t j, T value);
+    void importValue(std::vector<std::vector<T>> value);
+    void columnSet(size_t column);
+    void rowSet(size_t row);
+    template<typename P>
+    P import();
+    template<typename P>
+    P import(std::fstream& input);
+    T det(size_t i, size_t j);
 public:
-    MATRIX(size_t n, size_t m);
+    MATRIX(size_t column, size_t row);
     MATRIX();
     ~MATRIX();
     void importMatrix();
     void importMatrix(std::fstream& input);
     void exportMatrix(std::fstream& output);
     void display();
+    T det();
     MATRIX& operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
     MATRIX& operator*(T b);

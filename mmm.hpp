@@ -14,12 +14,9 @@ void MATRIX<T>::reSize()
 template<typename T>
 void MATRIX<T>::importValue()
 {
-    for (size_t i = 0llu; i < column; i++)
-        for (size_t j = 0llu; j < row; j++)
-        {
-            printf("[%llu,%llu]\t= ", i, j);
-            std::cin >> value[i][j];
-        }
+    for (std::vector<T>& p : value)
+        for (T& n : p)
+            n = import<T>(std::cin);
 }
 
 template<typename T>
@@ -27,14 +24,38 @@ void MATRIX<T>::importValue(std::fstream& input)
 {
     for (std::vector<T>& p : value)
         for (T& n : p)
-            input >> n;
+            n = import<T>(input);
 }
 
 template<typename T>
-MATRIX<T>::MATRIX(size_t n, size_t m)
+void MATRIX<T>::importValue(size_t i, size_t j, T value)
 {
-    column = n;
-    row = m;
+    this->value[i][j] = value;
+}
+
+template<typename T>
+void MATRIX<T>::importValue(std::vector<std::vector<T>> value)
+{
+    this->value = value;
+}
+
+template<typename T>
+void MATRIX<T>::columnSet(size_t column)
+{
+    this->column = column;
+}
+
+template<typename T>
+void MATRIX<T>::rowSet(size_t row)
+{
+    this->row = row;
+}
+
+template<typename T>
+MATRIX<T>::MATRIX(size_t column, size_t row)
+{
+    columnSet(column);
+    rowSet(row);
     reSize();
 }
 
@@ -59,7 +80,8 @@ void MATRIX<T>::importMatrix()
 template<typename T>
 void MATRIX<T>::importMatrix(std::fstream& input)
 {
-    input >> column >> row;
+    column = import<T>(input);
+    row = import<T>(input);
     reSize();
     importValue(input);
     std::cout << "Nhap thanh cong" << std::endl;
@@ -85,12 +107,20 @@ void MATRIX<T>::exportMatrix(std::fstream& output)
 template<typename T>
 void MATRIX<T>::display()
 {
+    std::cout << "--------------------------------------\n";
     for (size_t i = 0llu; i < column; i++)
     {
         for (size_t j = 0llu; j < row; j++)
             std::cout << value[i][j] << '\t';
         std::cout << std::endl;
     }
+}
+
+template<typename T>
+T MATRIX<T>::det()
+{
+    if (column == row)
+        return det(0llu, 0llu);
 }
 
 template<typename T>
@@ -102,7 +132,7 @@ MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
         matrix = new MATRIX<T>(column, row);
         for (size_t i = 0llu; i < column; i++)
             for (size_t j = 0llu; j < row; j++)
-                matrix->value[i][j] = this->value[i][j] + b.value[i][j];
+                matrix->importValue(i, j, this->value[i][j] + b.value[i][j]);
     }
     return *matrix;
 }
@@ -117,9 +147,10 @@ MATRIX<T>& MATRIX<T>::operator*(MATRIX<T>& b)
         for (size_t i = 0llu; i < column; i++)
             for (size_t j = 0llu; j < b.row; j++)
             {
-                matrix->value[i][j] = 0;
+                T tmp = 0;
                 for (size_t k = 0llu; k < row; k++)
-                    matrix->value[i][j] += value[i][k] * b.value[k][j];
+                    tmp += value[i][k] * b.value[k][j];
+                matrix->importValue(i, j, tmp);
             }
         return *matrix;
     }
@@ -140,7 +171,7 @@ MATRIX<T>& MATRIX<T>::operator=(MATRIX& b)
 {
     column = b.column;
     row = b.column;
-    value = b.value;
+    importValue(b.value);
     return *this;
 }
 
@@ -156,3 +187,36 @@ bool checkD(MATRIX<P>& a, MATRIX<P>& b)
     return a.row == b.column;
 }
 
+template<typename T>
+template<typename P>
+P MATRIX<T>::import()
+{
+    return import<P>(std::cin);
+}
+
+template<typename T>
+template<typename P>
+P MATRIX<T>::import(std::fstream& input)
+{
+    P n;
+    input >> n;
+    return n;
+}
+
+template<typename T>
+T MATRIX<T>::det(size_t i, size_t j)
+{
+    T tmp = NULL;
+    if (i - column == 2llu)
+    {
+        for (size_t _i = i + 1llu; _i < column; _i++)
+            for (size_t _j = j + 1llu; _j < row; _j++)
+                tmp += det(_i, _j);
+        tmp *= value[i][j];
+    }
+    else
+    {
+        tmp = value[i][j] * value[column][row] - value[i][row] * value[j][column];
+    }
+    return tmp;
+}
