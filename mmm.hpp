@@ -1,6 +1,19 @@
 #pragma once
 #include "mmm_core.hpp"
 
+template<typename T>
+T mPow(T n, int e)
+{
+    T result = 1;
+    for (int32_t i = 0; i < e; i++)
+        if (n > 0)
+            result *= n;
+        else
+            if (n < 0)
+                result /= n;
+
+    return result;
+}
 
 template<typename T>
 void MATRIX<T>::reSize()
@@ -117,13 +130,6 @@ void MATRIX<T>::display()
 }
 
 template<typename T>
-T MATRIX<T>::det()
-{
-    if (column == row)
-        return det(0llu, 0llu);
-}
-
-template<typename T>
 MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
 {
     MATRIX* matrix = NULL;
@@ -203,20 +209,23 @@ P MATRIX<T>::import(std::fstream& input)
     return n;
 }
 
-template<typename T>
-T MATRIX<T>::det(size_t i, size_t j)
+template<typename P>
+P det(MATRIX<P>& a)
 {
-    T tmp = NULL;
-    if (i - column == 2llu)
-    {
-        for (size_t _i = i + 1llu; _i < column; _i++)
-            for (size_t _j = j + 1llu; _j < row; _j++)
-                tmp += det(_i, _j);
-        tmp *= value[i][j];
-    }
-    else
-    {
-        tmp = value[i][j] * value[column][row] - value[i][row] * value[j][column];
-    }
-    return tmp;
+    P value = NULL;
+    for (size_t i = 0llu; i < a.column; i++)
+        value += mPow(-1, i) * value[i][0llu] * det(a, i, 0llu);
+    return value;
 }
+
+template<typename P>
+P det(MATRIX<P>& a, size_t i, size_t j)
+{
+    P value = NULL;
+    size_t _j = j + 1llu;
+    for (size_t _i = 0llu; _i < a.column; _i++)
+        if (_i != i)
+            value += mPow(-1, _i + _j) * value[_i][_j] * det(a, _i, _j);
+    return value;
+}
+

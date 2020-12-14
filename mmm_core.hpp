@@ -6,6 +6,9 @@
 #include <cstdio>
 
 template<typename T>
+T mPow(T n, int e);
+
+template<typename T>
 class MATRIX
 {
 private:
@@ -23,7 +26,6 @@ private:
     P import();
     template<typename P>
     P import(std::fstream& input);
-    T det(size_t i, size_t j);
 public:
     MATRIX(size_t column, size_t row);
     MATRIX();
@@ -32,7 +34,6 @@ public:
     void importMatrix(std::fstream& input);
     void exportMatrix(std::fstream& output);
     void display();
-    T det();
     MATRIX& operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
     MATRIX& operator*(T b);
@@ -41,4 +42,8 @@ public:
     friend bool checkN(MATRIX<P>& a, MATRIX<P>& b);
     template<typename P>
     friend bool checkD(MATRIX<P>& a, MATRIX<P>& b);
+    template<typename P>
+    friend P det(MATRIX<P>& a);
+    template<typename P>
+    friend P det(MATRIX<P>& a, size_t i, size_t j);
 };
