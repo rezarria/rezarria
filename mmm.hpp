@@ -69,10 +69,15 @@ template<typename T>
 void MATRIX<T>::exportMatrix(std::fstream& output)
 {
     output << column << " " << row << std::endl;
+    size_t pin = row - 1llu;
     for (size_t i = 0llu; i < column; i++)
         for (size_t j = 0llu; j < row; j++)
         {
-            output << value[i][j] << (j == row - 1llu) ? (std::endl) : " ";
+            output << value[i][j];
+            if (j == pin)
+                output << std::endl;
+            else
+                output << " ";
         }
     std::cout << "Xuat thanh cong" << std::endl;
 }
@@ -91,7 +96,7 @@ void MATRIX<T>::display()
 template<typename T>
 MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
 {
-    MATRIX* matrix;
+    MATRIX* matrix = NULL;
     if (checkN(*this, b))
     {
         matrix = new MATRIX<T>(column, row);
@@ -104,11 +109,31 @@ MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
 
 template<typename T>
 MATRIX<T>& MATRIX<T>::operator*(MATRIX<T>& b)
-{}
+{
+    MATRIX* matrix = NULL;
+    if (checkD(*this, b))
+    {
+        matrix = new MATRIX<T>(column, b.row);
+        for (size_t i = 0llu; i < column; i++)
+            for (size_t j = 0llu; j < b.row; j++)
+            {
+                matrix->value[i][j] = 0;
+                for (size_t k = 0llu; k < row; k++)
+                    matrix->value[i][j] += value[i][k] * b.value[k][j];
+            }
+        return *matrix;
+    }
+    return *matrix;
+}
 
 template<typename T>
-MATRIX<T>& MATRIX<T>::operator*(float b)
-{}
+MATRIX<T>& MATRIX<T>::operator*(T b)
+{
+    for (std::vector<T>& p : value)
+        for (T& n : p)
+            n *= b;
+    return *this;
+}
 
 template<typename T>
 MATRIX<T>& MATRIX<T>::operator=(MATRIX& b)
@@ -125,4 +150,9 @@ bool checkN(MATRIX<P>& a, MATRIX<P>& b)
     return (a.column == b.column) && (a.row == b.row);
 }
 
+template<typename P>
+bool checkD(MATRIX<P>& a, MATRIX<P>& b)
+{
+    return a.row == b.column;
+}
 

@@ -10,7 +10,7 @@ int main()
     b = a;
     a.display();
     b.display();
-    c = a + b;
+    c = a * b;
     c.display();
     c.exportMatrix(output);
     input.close();

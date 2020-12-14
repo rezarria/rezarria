@@ -25,8 +25,10 @@ public:
     void display();
     MATRIX& operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
-    MATRIX& operator*(float b);
+    MATRIX& operator*(T b);
     MATRIX& operator=(MATRIX& b);
     template<typename P>
     friend bool checkN(MATRIX<P>& a, MATRIX<P>& b);
+    template<typename P>
+    friend bool checkD(MATRIX<P>& a, MATRIX<P>& b);
 };
