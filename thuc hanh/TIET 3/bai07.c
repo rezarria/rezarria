@@ -17,7 +17,7 @@ void pushI32Arr(ARR* arr, uint64_t n);
 ARR* importI32Arr(ARR* arr);
 ARR* importI32Arr_f(ARR* arr, FILE* in);
 ARR* fillerI32Arr(ARR* arr);
-int32_t sunOfI32Arr(ARR* arr);
+int32_t sumOfI32Arr(ARR* arr);
 void printfResult(int32_t n);
 void printfResult_f(int32_t n, FILE* out);
 
@@ -27,7 +27,7 @@ int32_t main()
     int32_t arr = createI32Arr(importUI64_f(file));
     importI32Arr(arr);
     fclose(file);
-    int32_t t = sunOfI32Arr(arr);
+    int32_t t = sumOfI32Arr(arr);
     file = fopen("bai07.inp", "w");
     printfResult_f(t, file);
     printfResult(t);
@@ -106,7 +106,7 @@ ARR* fillerI32Arr(ARR* arr)
     return rArr;
 }
 
-int32_t sunOfI32Arr(ARR* arr)
+int32_t sumOfI32Arr(ARR* arr)
 {
     int32_t t = 0;
     for (uint64_t i = 0llu; i < arr->n; i++)
