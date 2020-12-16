@@ -146,17 +146,19 @@ void MATRIX<T>::info()
 }
 
 template<typename T>
-MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
+MATRIX<T> MATRIX<T>::operator+(MATRIX<T>& b)
 {
-    MATRIX* matrix = NULL;
+    MATRIX<T> matrix;
     if (checkN(*this, b))
     {
-        matrix = new MATRIX<T>(column, row);
+        matrix.columnSet(column);
+        matrix.rowSet(row);
+        matrix.reSize();
         for (size_t i = 0llu; i < column; i++)
             for (size_t j = 0llu; j < row; j++)
-                matrix->importValue(i, j, this->value[i][j] + b.value[i][j]);
+                matrix.importValue(i, j, this->value[i][j] + b.value[i][j]);
     }
-    return *matrix;
+    return matrix;
 }
 
 template<typename T>
@@ -189,7 +191,7 @@ MATRIX<T>& MATRIX<T>::operator*(T b)
 }
 
 template<typename T>
-MATRIX<T>& MATRIX<T>::operator=(MATRIX& b)
+MATRIX<T>& MATRIX<T>::operator=(MATRIX&& b)
 {
     column = b.column;
     row = b.column;

@@ -35,10 +35,10 @@ public:
     void exportMatrix(std::fstream& output);
     void display();
     void info();
-    MATRIX& operator+(MATRIX& b);
+    MATRIX operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
     MATRIX& operator*(T b);
-    MATRIX& operator=(MATRIX& b);
+    MATRIX& operator=(MATRIX&& b);
     T* operator[](size_t x);
     template<typename P>
     friend bool checkN(MATRIX<P>& a, MATRIX<P>& b);

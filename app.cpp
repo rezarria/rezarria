@@ -7,7 +7,7 @@ int main()
     input.open("app.inp", std::ios::in);
     output.open("app.out", std::ios::out);
     a.importMatrix(input);
-    b = a.D(1, 1);
+    b.operator=(a.D(1, 1));
     b.display();
     input.close();
     return EXIT_SUCCESS;
