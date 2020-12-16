@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "C/C++: gcc.exe build active file",
+			"label": "C windows",
 			"command": "C:\\TDM-GCC-64\\bin\\gcc.exe",
 			"args": [
 				"-g",
@@ -22,7 +22,7 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "C/C++: g++.exe build active file",
+			"label": "C++ windows",
 			"command": "C:\\TDM-GCC-64\\bin\\g++.exe",
 			"args": [
 				"-g",
@@ -41,8 +41,27 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "C/C++: gcc build active file",
+			"label": "C linux",
 			"command": "/usr/bin/gcc",
+			"args": [
+				"-g",
+				"${file}",
+				"-o",
+				"${workspaceFolder}/exe/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "compiler: /usr/bin/gcc"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C++ linux",
+			"command": "/usr/bin/g++",
 			"args": [
 				"-g",
 				"${file}",
@@ -59,7 +78,7 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"detail": "compiler: /usr/bin/gcc"
+			"detail": "compiler: /usr/bin/g++"
 		}
 	]
 }

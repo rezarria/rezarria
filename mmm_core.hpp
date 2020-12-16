@@ -34,10 +34,12 @@ public:
     void importMatrix(std::fstream& input);
     void exportMatrix(std::fstream& output);
     void display();
+    void info();
     MATRIX& operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
     MATRIX& operator*(T b);
     MATRIX& operator=(MATRIX& b);
+    T* operator[](size_t x);
     template<typename P>
     friend bool checkN(MATRIX<P>& a, MATRIX<P>& b);
     template<typename P>
@@ -46,4 +48,5 @@ public:
     friend P det(MATRIX<P>& a);
     template<typename P>
     friend P det(MATRIX<P>& a, size_t i, size_t j);
+    MATRIX& D(size_t x, size_t y);
 };

@@ -130,6 +130,22 @@ void MATRIX<T>::display()
 }
 
 template<typename T>
+void MATRIX<T>::info()
+{
+    std::cout << "---------------------------------" << std::endl;
+    std::cout << column << "x" << row << std::endl;
+    std::cout << "size : " << sizeof(T) << std::endl;
+    std::cout << "addr : " << &value << std::endl;
+    for (std::vector<T>& p : value)
+    {
+        std::cout << "column : " << &p << std::endl;
+        for (T& n : p)
+            std::cout << &n << std::endl;
+    }
+    std::cout << "---------------------------------" << std::endl;
+}
+
+template<typename T>
 MATRIX<T>& MATRIX<T>::operator+(MATRIX<T>& b)
 {
     MATRIX* matrix = NULL;
@@ -181,6 +197,12 @@ MATRIX<T>& MATRIX<T>::operator=(MATRIX& b)
     return *this;
 }
 
+template<typename T>
+T* MATRIX<T>::operator[](size_t x)
+{
+    return value[x];
+}
+
 template<typename P>
 bool checkN(MATRIX<P>& a, MATRIX<P>& b)
 {
@@ -209,23 +231,23 @@ P MATRIX<T>::import(std::fstream& input)
     return n;
 }
 
-template<typename P>
-P det(MATRIX<P>& a)
+template<typename T>
+MATRIX<T>& MATRIX<T>::D(size_t x, size_t y)
 {
-    P value = NULL;
-    for (size_t i = 0llu; i < a.column; i++)
-        value += mPow(-1, i) * value[i][0llu] * det(a, i, 0llu);
-    return value;
+    size_t _i = 0llu, _j = 0llu;
+    MATRIX<T>* matrix = new MATRIX<T>(column - 1llu, row - 1llu);
+    matrix->info();
+    for (size_t i = 0llu; i < column; i++)
+        for (size_t j = 0llu; j < row; j++)
+            if ((i != x) && (j != y))
+            {
+                matrix->value[_i][_j] = value[i][j];
+                _j++;
+                if (_j == matrix->row)
+                {
+                    _j = 0llu;
+                    _i++;
+                }
+            }
+    return *matrix;
 }
-
-template<typename P>
-P det(MATRIX<P>& a, size_t i, size_t j)
-{
-    P value = NULL;
-    size_t _j = j + 1llu;
-    for (size_t _i = 0llu; _i < a.column; _i++)
-        if (_i != i)
-            value += mPow(-1, _i + _j) * value[_i][_j] * det(a, _i, _j);
-    return value;
-}
-
