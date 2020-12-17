@@ -18,8 +18,8 @@ T mPow(T n, int e)
 template<typename T>
 void MATRIX<T>::reSize()
 {
-    value.resize(column);
-    for (std::vector<T>& p : value)
+    value->resize(column);
+    for (std::vector<T>& p : *value)
         p.resize(row);
     std::cout << "Thay doi kick thuoc thanh cong" << std::endl;
 }
@@ -27,7 +27,7 @@ void MATRIX<T>::reSize()
 template<typename T>
 void MATRIX<T>::importValue()
 {
-    for (std::vector<T>& p : value)
+    for (std::vector<T>& p : *value)
         for (T& n : p)
             n = import<T>(std::cin);
 }
@@ -35,7 +35,7 @@ void MATRIX<T>::importValue()
 template<typename T>
 void MATRIX<T>::importValue(std::fstream& input)
 {
-    for (std::vector<T>& p : value)
+    for (std::vector<T>& p : *value)
         for (T& n : p)
             n = import<T>(input);
 }
@@ -47,9 +47,18 @@ void MATRIX<T>::importValue(size_t i, size_t j, T value)
 }
 
 template<typename T>
-void MATRIX<T>::importValue(std::vector<std::vector<T>> value)
+void MATRIX<T>::importValue(const std::vector<std::vector<T>>& value)
+{
+    for (size_t i = 0llu; i < column; i++)
+        for (size_t j = 0llu; j < row; j++)
+            (*this->value)[i][j] = (*value)[i][j];
+}
+
+template<typename T>
+void MATRIX<T>::importValue(std::vector<std::vector<T>>&& value)
 {
     this->value = value;
+    value = NULL;
 }
 
 template<typename T>
@@ -124,7 +133,7 @@ void MATRIX<T>::display()
     for (size_t i = 0llu; i < column; i++)
     {
         for (size_t j = 0llu; j < row; j++)
-            std::cout << value[i][j] << '\t';
+            std::cout << (*value)[i][j] << '\t';
         std::cout << std::endl;
     }
 }
@@ -191,11 +200,21 @@ MATRIX<T>& MATRIX<T>::operator*(T b)
 }
 
 template<typename T>
-MATRIX<T>& MATRIX<T>::operator=(MATRIX&& b)
+const MATRIX<T>& MATRIX<T>::operator=(const MATRIX& b)
+{
+    columnSet(b.column);
+    rowSet(b.rowSet);
+    reSize();
+    importValue(b);
+    return *this;
+}
+
+template<typename T>
+const MATRIX<T>& MATRIX<T>::operator=(MATRIX&& b)
 {
     column = b.column;
     row = b.column;
-    importValue(b.value);
+    importValue(std::move(b));
     return *this;
 }
 

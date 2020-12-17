@@ -12,14 +12,15 @@ template<typename T>
 class MATRIX
 {
 private:
-    std::vector<std::vector<T>> value;
+    std::vector<std::vector<T>>* value;
     size_t column = 0llu;
     size_t row = 0llu;
     void reSize();
     void importValue();
     void importValue(std::fstream& input);
     void importValue(size_t i, size_t j, T value);
-    void importValue(std::vector<std::vector<T>> value);
+    void importValue(const std::vector<std::vector<T>>& value);
+    void importValue(std::vector<std::vector<T>>&& value);
     void columnSet(size_t column);
     void rowSet(size_t row);
     template<typename P>
@@ -38,7 +39,8 @@ public:
     MATRIX operator+(MATRIX& b);
     MATRIX& operator*(MATRIX& b);
     MATRIX& operator*(T b);
-    MATRIX& operator=(MATRIX&& b);
+    const MATRIX& operator=(const MATRIX& b);
+    const MATRIX& operator=(MATRIX&& b);
     T* operator[](size_t x);
     template<typename P>
     friend bool checkN(MATRIX<P>& a, MATRIX<P>& b);
