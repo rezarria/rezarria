@@ -15,12 +15,15 @@ namespace core
     class MATRIX
     {
     private:
-        //static std::map < size_t id, MATRIX* address> matrix_record;
-        std::vector<std::vector<T>>* value;
+        std::vector<std::vector<T>>* value = NULL;
+        size_t id = 0llu;
         size_t column = 0llu;
         size_t row = 0llu;
+        size_t&& getID();
+        std::map<size_t, MATRIX<T>*>& getRecord();
         size_t createID();
-        size_t ID = 0llu;
+        void addRecord();
+        void removeRecord();
         void refeshValue();
         void reSizeAllColumn();
         void reSizeAllRow();
@@ -36,8 +39,7 @@ namespace core
         void insertColumn(size_t pos, std::vector<T>&& list);
         void insertRow(size_t pos, const std::vector<T>& list);
         void insertRow(size_t pos, std::vector<T>&& list);
-        void addRecord();
-        void removeRecord();
+        void deleteValue();
     public:
         MATRIX();
         MATRIX(size_t column, size_t row);

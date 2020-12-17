@@ -66,7 +66,8 @@
 				"-g",
 				"${file}",
 				"-o",
-				"${workspaceFolder}/exe/${fileBasenameNoExtension}"
+				"${workspaceFolder}/exe/${fileBasenameNoExtension}",
+				"-std=c++20"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

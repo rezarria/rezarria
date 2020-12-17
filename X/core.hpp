@@ -1,20 +1,54 @@
 #pragma once
 #include "core_h.hpp"
 
+
+
 namespace core
 {
     template<typename T>
-    size_t MATRIX<T>::createID()
+    size_t&& MATRIX<T>::getID()
     {
         static size_t ID = 0llu;
-        return ++ID;
+        ID++;
+        return std::move(ID);
     }
 
     template<typename T>
+    std::map<size_t, MATRIX<T>*>& MATRIX<T>::getRecord()
+    {
+        static std::map<size_t, core::MATRIX<T>*> record;
+        return record;
+    }
+
+    template<typename T>
+    size_t MATRIX<T>::createID()
+    {
+        if (!id)
+            id = getID();
+        return id;
+    }
+
+    template<typename T>
+    void MATRIX<T>::addRecord()
+    {
+        id = createID();
+        if (id && !getRecord().contains(id))
+            getRecord().insert({ id, this });
+    }
+
+    template<typename T>
+    void MATRIX<T>::removeRecord()
+    {
+    }
+    template<typename T>
     void MATRIX<T>::refeshValue()
     {
-        reSizeAllColumn();
-        reSizeAllRow();
+        if (value)
+        {
+            reSizeAllColumn();
+            reSizeAllRow();
+        }
+        else value = new std::vector<std::vector<T>>;
         std::cout << "Da refesh Value xong" << std::endl;
     }
 
@@ -67,12 +101,6 @@ namespace core
     }
 
     template<typename T>
-    void MATRIX<T>::addRecord()
-    {
-        ID = createID();
-    }
-
-    template<typename T>
     void MATRIX<T>::setRow(size_t row)
     {
         this->row = row;
@@ -80,19 +108,29 @@ namespace core
     }
 
     template<typename T>
+    void MATRIX<T>::deleteValue()
+    {
+        if (value)
+        {
+            for (std::vector<T>& p : *value)
+                p.clear();
+            value->clear();
+        }
+    }
+
+    template<typename T>
     MATRIX<T>::MATRIX()
     {
-        addRecord();
         std::cout << "Tao thanh cong ma tran" << std::endl;
     }
 
     template<typename T>
     MATRIX<T>::MATRIX(size_t column, size_t row)
     {
+        addRecord();
         setColumn(column);
         setRow(row);
         refeshValue();
-        addRecord();
         std::cout << "Tao ma tran rong " << column << "x" << row << " thanh cong" << std::endl;
     }
 
@@ -102,7 +140,6 @@ namespace core
         input >> column >> row;
         refeshValue();
         importValue(input);
-        addRecord();
         std::cout << "Nhap tu file thanh cong" << std::endl;
     }
 
@@ -111,13 +148,18 @@ namespace core
     {
         setColumn(other.size());
         setRow(other[0].size());
-        addRecord();
         importValue(other);
     }
 
     template<typename T>
     MATRIX<T>::~MATRIX()
     {
+        deleteValue();
+        getRecord().erase(id);
+        std::cout << "-------------------------------------" << std::endl;
+        std::cout << "Huy ma tran" << std::endl;
+        std::cout << "id : " << id << std::endl;
+        std::cout << "n = " << getRecord().size() << std::endl;
         std::cout << "Huy ham thanh cong" << std::endl;
     }
 
@@ -136,7 +178,7 @@ namespace core
     void MATRIX<T>::info()
     {
         std::cout << "-------------------------------------" << std::endl;
-        std::cout << "id    : " << ID << std::endl;
+        std::cout << "id    : " << id << std::endl;
         std::cout << "addr  : " << value << std::endl;
         std::cout << "size  : " << column << "x" << row << std::endl;
     }
