@@ -7,7 +7,7 @@
 #include <cmath>
 #include <fstream>
 #include <map>
-
+#include <filesystem>
 
 namespace core
 {
@@ -27,10 +27,16 @@ namespace core
         void refeshValue();
         void reSizeAllColumn();
         void reSizeAllRow();
-        void importValue(std::fstream input);
+        void importValue(std::fstream& input);
+        void importValue(std::fstream&& input);
         void importValue(std::vector<std::vector<T>>& other);
         void setColumn(size_t column);
+        void setColumn(std::fstream& input);
+        void setColumn(std::fstream&& input);
         void setRow(size_t row);
+        void setRow(std::fstream& input);
+        void setRow(std::fstream&& input);
+        void setValue(std::vector<std::vector<T>>* value);
         void clearColumn(size_t begin, size_t end);
         void clearRow(size_t begin, size_t end);
         void eraseColumn(size_t begin, size_t end);
@@ -43,11 +49,20 @@ namespace core
     public:
         MATRIX();
         MATRIX(size_t column, size_t row);
-        MATRIX(std::fstream input);
+        MATRIX(const std::fstream& input);
+        MATRIX(std::fstream&& input);
+        MATRIX(const std::filesystem::path& path);
+        MATRIX(std::filesystem::path&& path);
         MATRIX(const std::vector<std::vector<T>>& other);
         MATRIX(std::vector<std::vector<T>>&& other);
         MATRIX(const MATRIX<T>& other);
         MATRIX(MATRIX<T>&& other);
+        void import(const std::fstream& input);
+        void import(std::fstream&& input);
+        void import(const std::filesystem::path& path);
+        void import(std::filesystem::path&& path);
+        void import(const std::vector<std::vector<T>>& other);
+        void import(std::vector<std::vector<T>>&& other);
         ~MATRIX();
         MATRIX<T>&& operator+(const MATRIX<T>& other);
         MATRIX<T>&& operator*(const MATRIX<T>& other);
@@ -60,5 +75,6 @@ namespace core
         void showValue();
         void display();
         T* operator[](size_t x);
+        friend bool isSameSize(const MATRIX<T>& a, const MATRIX<T>& b);
     };
 }

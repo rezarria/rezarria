@@ -78,11 +78,20 @@ namespace core
     }
 
     template<typename T>
-    void MATRIX<T>::importValue(std::fstream input)
+    void MATRIX<T>::importValue(std::fstream& input)
     {
         for (std::vector<T>& p : *value)
             for (T& n : p)
                 input >> n;
+    }
+
+    template<typename T>
+    void MATRIX<T>::importValue(std::fstream&& input)
+    {
+        std::streamsize size = sizeof(T);
+        for (std::vector<T>& p : *value)
+            for (T& n : p)
+                input.read((char*)&n, size);
     }
 
     template<typename T>
@@ -101,10 +110,40 @@ namespace core
     }
 
     template<typename T>
+    void MATRIX<T>::setColumn(std::fstream& input)
+    {
+        input >> column;
+    }
+
+    template<typename T>
+    void MATRIX<T>::setColumn(std::fstream&& input)
+    {
+        input.read((char*)&column, sizeof(size_t));
+    }
+
+    template<typename T>
     void MATRIX<T>::setRow(size_t row)
     {
         this->row = row;
         std::cout << "Row = " << this->row << std::endl;
+    }
+
+    template<typename T>
+    void MATRIX<T>::setRow(std::fstream& input)
+    {
+        input >> row;
+    }
+
+    template<typename T>
+    void MATRIX<T>::setRow(std::fstream&& input)
+    {
+        input.read((char*)&row, sizeof(size_t));
+    }
+
+    template<typename T>
+    void MATRIX<T>::setValue(std::vector<std::vector<T>>* value)
+    {
+        this->value = value;
     }
 
     template<typename T>
@@ -135,12 +174,41 @@ namespace core
     }
 
     template<typename T>
-    MATRIX<T>::MATRIX(std::fstream input)
+    MATRIX<T>::MATRIX(const std::fstream& input)
     {
-        input >> column >> row;
+        setColumn(input);
+        setRow(input);
         refeshValue();
         importValue(input);
-        std::cout << "Nhap tu file thanh cong" << std::endl;
+        std::cout << "Nhap tu file ki tu thanh cong" << std::endl;
+    }
+
+    template<typename T>
+    MATRIX<T>::MATRIX(std::fstream&& input)
+    {
+        setColumn(input);
+        setRow(input);
+        refeshValue();
+        importValue(input);
+        std::cout << "Nhap tu file nhi phan thanh cong" << std::endl;
+    }
+
+    template<typename T>
+    MATRIX<T>::MATRIX(const std::filesystem::path& path)
+    {
+        std::fstream input;
+        input.open(path, std::ios::in);
+        import(input);
+        input.close();
+    }
+
+    template<typename T>
+    MATRIX<T>::MATRIX(std::filesystem::path&& path)
+    {
+        std::fstream input;
+        input.open(path, std::ios::in | std::ios::binary);
+        import(input);
+        input.close();
     }
 
     template<typename T>
@@ -161,6 +229,32 @@ namespace core
         std::cout << "id : " << id << std::endl;
         std::cout << "n = " << getRecord().size() << std::endl;
         std::cout << "Huy ham thanh cong" << std::endl;
+    }
+
+    template<typename T>
+    MATRIX<T>&& MATRIX<T>::operator+(const MATRIX<T>& other)
+    {
+        MATRIX out;
+        if (isSameSize(*this, other))
+        {
+            out.setColumn(column);
+            out.setRow(row);
+            out.refeshValue();
+            for (size_t i = 0llu; i < column; i++)
+                for (size_t j = 0; j < row; j++)
+                    out.value = this->value[i][j] + other.value[i][j];
+        }
+        return std::move(out);
+    }
+
+    template<typename T>
+    const MATRIX<T>& MATRIX<T>::operator=(MATRIX<T>&& other)
+    {
+        setColumn(other.column);
+        setRow(other.row);
+        setValue(other.value);
+        other.value = NULL;
+        return this*;
     }
 
     template<typename T>
@@ -202,9 +296,11 @@ namespace core
         info();
         showValue();
     }
-
-
-
+    template<typename T>
+    bool isSameSize(const MATRIX<T>& a, const MATRIX<T>& b)
+    {
+        return (a.column == b.column) && (a.row = b.row);
+    }
 }
 
 
