@@ -2,9 +2,6 @@
 
 int32_t main()
 {
-    core::MATRIX<int> a(std::filesystem::path("app.inp"));
-    core::MATRIX<int> b(std::filesystem::path("app.inp"));
-    a.display();
-    b.display();
+    std::cout << "gg" << std::endl;
     return EXIT_SUCCESS;
 }
