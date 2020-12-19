@@ -129,3 +129,32 @@ char* getLine(FILE* input)
         str[i] = (char)fgetc(input);
     return str;
 }
+
+int32_t** createI32Matrix(size_t n, size_t m)
+{
+    int32_t** matrix = (int32_t**)malloc(n * sizeof(int32_t*));
+    for (size_t i = 0llu; i < n; i++)
+        matrix[i] = (int32_t*)calloc(m, sizeof(int32_t));
+    return matrix;
+}
+
+int32_t** getI32Matrix_f(FILE* input, size_t* n, size_t* m)
+{
+    int32_t** matrix;
+    *n = importUI64_f(input);
+    *m = importUI64_f(input);
+    matrix = createI32Matrix(*n, *m);
+    for (size_t i = 0llu; i < *n; i++)
+        for (size_t j = 0llu; j < *m; j++)
+            matrix[i][j] = importI32(input);
+    return matrix;
+}
+
+void importI32Arr_f(FILE* input, int32_t** arr, uint64_t n, uint64_t m)
+{
+    for (uint64_t i = 0llu; i < n; i++)
+        for (uint64_t j = 0llu; j < m; j++)
+            arr[i][j] = importUi32_f(input);
+}
+
+

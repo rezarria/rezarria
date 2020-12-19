@@ -4,8 +4,8 @@
 
 void nhapNMP(uint64_t* n, uint64_t* m, uint64_t* p);
 int32_t** createIn32Arr(uint64_t n, uint64_t m);
-void importArr(int32_t** arr, uint64_t n, uint64_t m);
-void displayArr(int32_t** arr, uint64_t n, uint64_t m);
+void importArr_f(int32_t** arr, uint64_t n, uint64_t m);
+void displayI32Arr(int32_t** arr, uint64_t n, uint64_t m);
 int32_t** addTwoArr(int32_t** arr1, int32_t** arr2, uint64_t n, uint64_t m, uint64_t p);
 
 int main()
@@ -18,20 +18,20 @@ int main()
 	int32_t** b = createIn32Arr(m, p);
 
 	printf("Nhap mang a %dx%d\n", n, m);
-	importArr(a, n, m);
+	importArr_f(a, n, m);
 
 	printf("Nhap mang b %dx%d\n", m, p);
-	importArr(b, m, p);
+	importArr_f(b, m, p);
 
 	printf("-------------------------------\n");
-	displayArr(a, n, m);
+	displayI32Arr(a, n, m);
 
 	printf("-------------------------------\n");
-	displayArr(b, m, p);
+	displayI32Arr(b, m, p);
 
 	int32_t** c = addTwoArr(a, b, n, m, p);
 	printf("-------------------------------\n");
-	displayArr(c, n, p);
+	displayI32Arr(c, n, p);
 
 	return EXIT_SUCCESS;
 }
@@ -54,7 +54,7 @@ int32_t** createIn32Arr(uint64_t n, uint64_t m)
 	return tmp;
 }
 
-void importArr(int32_t** arr, uint64_t n, uint64_t m)
+void importArr_f(int32_t** arr, uint64_t n, uint64_t m)
 {
 	for (uint64_t i = 0llu; i < n; i++)
 		for (uint64_t j = 0llu; j < m; j++)
@@ -64,7 +64,7 @@ void importArr(int32_t** arr, uint64_t n, uint64_t m)
 		}
 }
 
-void displayArr(int32_t** arr, uint64_t n, uint64_t m)
+void displayI32Arr(int32_t** arr, uint64_t n, uint64_t m)
 {
 	for (uint64_t i = 0llu; i < n; i++)
 	{
