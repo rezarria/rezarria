@@ -109,13 +109,11 @@ void fillerI32(int32_t** matrix, size_t n, size_t m)
     size_t count = 0llu;
     for (size_t i = 0llu; i < n; i++)
         for (size_t j = 0llu; j < m; j++)
-        {
             if (isPrime(matrix[i][j]))
             {
                 count++;
                 printf("%d", matrix[i][j]);
                 fputc((count == 10llu) ? '\n' : '\t', stdout);
             }
-        }
     fputc('\n', stdout);
 }

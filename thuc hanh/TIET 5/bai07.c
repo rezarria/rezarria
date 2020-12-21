@@ -22,7 +22,6 @@ int32_t main()
     return EXIT_SUCCESS;
 }
 
-
 uint64_t importUI64()
 {
     return importUI64_f(stdin);

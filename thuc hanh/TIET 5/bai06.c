@@ -12,7 +12,7 @@ uint64_t importUI64();
 uint64_t importUI64_f(FILE* in);
 int32_t** createI32Matrix(size_t n, size_t m);
 void importI32Matrix(int32_t** matrix, size_t n, size_t m);
-void displayFloatMatrix(FILE* out, int32_t** matrix, size_t n, size_t m);
+void displayUI32Matrix(FILE* out, int32_t** matrix, size_t n, size_t m);
 
 int32_t main()
 {
@@ -23,7 +23,7 @@ int32_t main()
     int32_t** matrix = createI32Matrix(n, m);
     importI32Matrix(matrix, n, m);
     FILE* f = fopen("bai06.out", "w");
-    displayFloatMatrix(f, matrix, n, m);
+    displayUI32Matrix(f, matrix, n, m);
     fclose(f);
     return EXIT_SUCCESS;
 }
@@ -74,7 +74,7 @@ void importI32Matrix(int32_t** matrix, size_t n, size_t m)
         }
 }
 
-void displayFloatMatrix(FILE* out, int32_t** matrix, size_t n, size_t m)
+void displayUI32Matrix(FILE* out, int32_t** matrix, size_t n, size_t m)
 {
     fprintf(out, "%llu\t%llu\n", n, m);
     size_t p = m - 1llu;

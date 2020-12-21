@@ -3,6 +3,16 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
+
+char* importString_f(FILE* in, char* str)
+{
+    if (in == stdin)
+        printf("string> ");
+    fgets(str, 256llu, in);
+    return (char*)realloc((void*)str, strlen(str) + 1llu);
+}
+
 
 void swap(uintptr_t _a, uintptr_t _b, size_t _size)
 {
@@ -36,9 +46,131 @@ int32_t importI32_f(FILE* in)
     return n;
 }
 
+int32_t** createI32Matrix(size_t n, size_t m)
+{
+    int32_t** matrix = (int32_t**)malloc(n * sizeof(int32_t*));
+    for (size_t i = 0llu; i < n; i++)
+        matrix[i] = (int32_t*)calloc(m, sizeof(int32_t));
+    return matrix;
+}
+
+void importI32Matrix(int32_t** matrix, size_t n, size_t m)
+{
+    for (size_t i = 0llu; i < n; i++)
+        for (size_t j = 0llu; j < m; j++)
+        {
+            printf("[%llu][%llu] ", i, j);
+            matrix[i][j] = importI32();
+        }
+}
+
+void importUI32Matrix_f(FILE* input, int32_t** matrix, size_t n, size_t m)
+{
+    for (size_t i = 0llu; i < n; i++)
+        importI32Arr_f(input, matrix[i], m);
+}
+
+void displayUI32Matrix(FILE* out, int32_t** matrix, size_t n, size_t m)
+{
+    fprintf(out, "%llu\t%llu\n", n, m);
+    size_t p = m - 1llu;
+    for (size_t i = 0llu; i < n; i++)
+    {
+        for (size_t j = 0llu; j < m; j++)
+        {
+            fprintf(out, "%llu", matrix[i][j]);
+            fputc((j == p) ? '\n' : '\t', out);
+        }
+    }
+}
+
+int32_t** getI32Matrix_f(FILE* input, size_t* n, size_t* m)
+{
+    int32_t** matrix;
+    *n = importUI64_f(input);
+    *m = importUI64_f(input);
+    matrix = createI32Matrix(*n, *m);
+    for (size_t i = 0llu; i < *n; i++)
+        for (size_t j = 0llu; j < *m; j++)
+            matrix[i][j] = importI32(input);
+    return matrix;
+}
+
+size_t rowSizeOf(FILE* in)
+{
+    fseek(in, 0l, SEEK_SET);
+    char c;
+    bool r = false;
+    size_t row = 0llu;
+    do
+    {
+        c = fgetc(in);
+        switch (c)
+        {
+        case ' ':
+        case '\n':
+        {
+            if (r)
+            {
+                r = false;
+                row++;
+            }
+            break;
+        }
+        default:
+            if (!r)
+                r = true;
+        }
+    } while (c != '\n');
+    if (r) row++;
+    return row;
+}
+
+size_t columnSizeOf(FILE* in)
+{
+    fseek(in, 0l, SEEK_SET);
+    size_t column = 0llu;
+    char c;
+    bool r = true;
+    do
+    {
+        c = fgetc(in);
+        if (c == '\n')
+        {
+            column++;
+            r = false;
+        }
+        if (!r)
+            r = true;
+    } while (!feof(in));
+    if (r) column++;
+    return column;
+}
+
+void matrixSizeOf(FILE* input, size_t* n, size_t* m)
+{
+    *m = rowSizeOf(input);
+    *n = columnSizeOf(input);
+    fseek(input, 0l, SEEK_SET);
+}
+
+int32_t** getUI32Matrix_f_auto(FILE* input, size_t* n, size_t* m)
+{
+    matrixSizeOf(input, n, m);
+    int32_t** matrix = createI32Matrix(*n, *m);
+    importUI32Matrix_f(input, matrix, *n, *m);
+    return matrix;
+}
+
+void importI32Arr_f(FILE* input, int32_t* arr, uint64_t n)
+{
+    for (uint64_t i = 0llu; i < n; i++)
+        arr[i] = importUi32_f(input);
+}
+
 uint32_t importUI32()
 {
-    return importUI32(stdin);
+    return importUI32_f(stdin);
 }
 
 uint32_t importUI32_f(FILE* in)
@@ -91,6 +223,41 @@ float* importFloatArry_f(uint64_t n, FILE* in)
     return f;
 }
 
+float** createFloatMatrix(size_t n, size_t m)
+{
+    float** matrix = (float**)malloc(n * sizeof(float*));
+    for (size_t i = 0llu; i < n; i++)
+        matrix[i] = (float*)calloc(m, sizeof(float));
+    return matrix;
+}
+
+float** getFloatMatrix_f(FILE* input, size_t* n, size_t* m)
+{
+    float** matrix;
+    *n = importUI64_f(input);
+    *m = importUI64_f(input);
+    matrix = createFloatMatrix(*n, *m);
+    for (size_t i = 0llu; i < *n; i++)
+        for (size_t j = 0llu; j < *m; j++)
+            matrix[i][j] = importFloat_f(input);
+    return matrix;
+}
+
+void displayFloatMatrix(float** matrix, size_t n, size_t m)
+{
+    printf("Ma tran %llu x %llu \n", n, m);
+    printf("-------------------------------------------\n");
+    size_t p = m - 1llu;
+    for (size_t i = 0llu; i < n; i++)
+    {
+        for (size_t j = 0llu; j < m; j++)
+        {
+            fprintf(stdout, "%5.2f", matrix[i][j]);
+            fputc((j == p) ? '\n' : '\t', stdout);
+        }
+    }
+}
+
 bool isPrime(uint32_t n)
 {
     bool check = true;
@@ -130,31 +297,45 @@ char* getLine(FILE* input)
     return str;
 }
 
-int32_t** createI32Matrix(size_t n, size_t m)
+char* decToBin(uint32_t n)
 {
-    int32_t** matrix = (int32_t**)malloc(n * sizeof(int32_t*));
-    for (size_t i = 0llu; i < n; i++)
-        matrix[i] = (int32_t*)calloc(m, sizeof(int32_t));
-    return matrix;
+    char* bin = (char*)calloc(33llu, sizeof(char));
+    size_t i = 32llu;
+    while (i)
+    {
+        i--;
+        bin[i] = '0' + n % 2u;
+        n /= 2u;
+    }
+    return bin;
 }
 
-int32_t** getI32Matrix_f(FILE* input, size_t* n, size_t* m)
+char* decToHex(uint32_t n)
 {
-    int32_t** matrix;
-    *n = importUI64_f(input);
-    *m = importUI64_f(input);
-    matrix = createI32Matrix(*n, *m);
-    for (size_t i = 0llu; i < *n; i++)
-        for (size_t j = 0llu; j < *m; j++)
-            matrix[i][j] = importI32(input);
-    return matrix;
+    char* hex = (char*)calloc(9llu, sizeof(char));
+    size_t i = 8llu;
+    while (i)
+    {
+        i--;
+        hex[i] = '0' + n % 16u;
+        if (hex[i] > '9')
+            hex[i] += 7llu;
+        n /= 16u;
+    }
+    return hex;
 }
 
-void importI32Arr_f(FILE* input, int32_t** arr, uint64_t n, uint64_t m)
+uint32_t gcd(size_t a, size_t b)
 {
-    for (uint64_t i = 0llu; i < n; i++)
-        for (uint64_t j = 0llu; j < m; j++)
-            arr[i][j] = importUi32_f(input);
+    while (a == b)
+        if (a > b)
+            a -= b;
+        else
+            b -= a;
+    return a;
 }
 
-
+uint32_t lcm(size_t a, size_t b)
+{
+    return (a * b) / gcd(a, b);
+}

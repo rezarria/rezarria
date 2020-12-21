@@ -85,7 +85,6 @@ uint64_t importUI64_f(FILE* in)
     return n;
 }
 
-
 char* decToBin(uint32_t n)
 {
     char* bin = (char*)calloc(33llu, sizeof(char));
