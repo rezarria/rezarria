@@ -39,20 +39,3 @@ int32_t importI32_f(FILE* in)
     fscanf(in, "%d", &n);
     return n;
 }
-
-
-int main()
-{
-    FILE * f = fopen("out", "w");
-    int n;
-    scanf("%d", &n);
-    for(int i = 0; i < n; i++)
-    {
-        int a;
-        printf("Nhap gia tri thu %d ", i);
-        scanf("%d", &a);
-        fprintf(f, "%d ", a);
-    }
-    fclose(f);
-    return 0;
-}

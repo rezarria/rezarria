@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
-
+#define __WINDOWS__ 1
 typedef struct INFO_STUDENT_S
 {
     char* nameStudent;
@@ -110,7 +110,11 @@ LIST* createList(size_t n)
 {
     LIST* list = (LIST*)calloc(1llu, sizeof(LIST));
     list->max = n;
+    #if __WINDOWS__
+    list->info = (INFO_STUDENT**)calloc(list->max, sizeof(void*));
+    #else
     list->info = (INFO_STUDENT**)calloc(list->max, sizeof(__ptr_t));
+    #endif
     return list;
 }
 
@@ -120,8 +124,6 @@ LIST* importList(LIST* list)
     {
         printf("Nhap 'n' de tao them thong tin hoc sinh\n");
         printf("Nhap '\\' de thoat\n");
-        char key = 0xA;
-        bool run = true;
         char key;
         do
             switch (key = importChar())
@@ -150,13 +152,21 @@ LIST* importList_f(FILE* input, LIST* list)
 LIST* reSizeList(LIST* list, size_t size)
 {
     list->max = size;
+    #if __WINDOWS__
+    list->info = (INFO_STUDENT**)realloc((void*)list->info, sizeof(void*) * list->size * 2llu);
+    #else
     list->info = (INFO_STUDENT**)realloc((void*)list->info, sizeof(__ptr_t) * list->size * 2llu);
+    #endif
     return list;
 }
 
 LIST* fixSizeList(LIST* list)
 {
+    #if __WINDOWS__
+    list->info = (INFO_STUDENT**)realloc((void*)list->info, sizeof(void*) * list->size);
+    #else
     list->info = (INFO_STUDENT**)realloc((void*)list->info, sizeof(__ptr_t) * list->size);
+    #endif
     list->max = list->size;
     return list;
 }
@@ -200,7 +210,11 @@ char* importString_f(FILE* in, char* str)
         str = (char*)realloc((void*)str, length + 1llu);
         str[length] = '\0';
         if (in == stdin)
+        #if __WINDOWS__
+            memcpy(str, in->_base, length);
+        #else
             memcpy(str, in->_IO_read_base, length);
+        #endif
         else
             fgets(str, length, in);
         resetStdin();
@@ -243,15 +257,24 @@ char importChar_f(FILE* in)
 
 void resetStdin()
 {
+    #if __WINDOWS__
+    if(stdin->_base)
+        fflush(stdin);
+    #else
     if (stdin->_IO_read_ptr)
         stdin->_IO_read_ptr = stdin->_IO_buf_end - 1llu;
+    #endif
 }
 
 size_t lengthString_f(FILE* in)
 {
     size_t length = 0llu;
     if (in == stdin)
+        #if __WINDOWS__
+        length = stdin->_cnt;
+        #else
         length = strlen(stdin->_IO_read_base) - 1llu;
+        #endif
     else
     {
         fpos_t pos;
