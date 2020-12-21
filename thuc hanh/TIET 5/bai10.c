@@ -7,9 +7,6 @@
 #include <stdint.h>
 #include <math.h>
 
-#define LENGTH_OF_NAME 256
-#define SIZE_DEFAULT 20
-
 typedef struct INFO_STUDENT_S
 {
     char* nameStudent;
@@ -112,7 +109,6 @@ void exportInfo(FILE* out, INFO_STUDENT* info)
 LIST* createList(size_t n)
 {
     LIST* list = (LIST*)calloc(1llu, sizeof(LIST));
-    list->size = 0llu;
     list->max = n;
     list->info = (INFO_STUDENT**)calloc(list->max, sizeof(__ptr_t));
     return list;
@@ -126,10 +122,9 @@ LIST* importList(LIST* list)
         printf("Nhap '\\' de thoat\n");
         char key = 0xA;
         bool run = true;
+        char key;
         do
-        {
-            key = importChar();
-            switch (key)
+            switch (key = importChar())
             {
             case 'n':
             {
@@ -138,9 +133,7 @@ LIST* importList(LIST* list)
             }
             case '\\':
                 printf("THOAT\n");
-                run = false;
-            }
-        } while (run);
+        } while (key == 'n');
     }
     fixSizeList(list);
     return list;
@@ -187,15 +180,14 @@ size_t whoIsBest(LIST* list)
 void pushInfo(LIST* list, INFO_STUDENT* info)
 {
     list->size++;
-    if (list->size > list->max);
-    reSizeList(list, list->max + 1llu);
+    if (list->size > list->max)
+reSizeList(list, list->max + 1llu);
     list->info[list->size - 1llu] = info;
 }
 
 char* importString_f(FILE* in, char* str)
 {
-    char line[256];
-    if (stdin->_IO_read_ptr)
+    if (in)
     {
         size_t length;
         if (in == stdin)
