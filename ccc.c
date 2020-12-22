@@ -339,3 +339,81 @@ uint32_t lcm(size_t a, size_t b)
 {
     return (a * b) / gcd(a, b);
 }
+
+char importChar()
+{
+    return importChar_f(stdin);
+}
+
+char importChar_f(FILE* in)
+{
+    if (in == stdin)
+        printf("char> ");
+    resetStdin();
+    char c = fgetc(stdin);
+    resetStdin();
+    return c;
+}
+
+void resetStdin()
+{
+#if __WINDOWS__
+    if (stdin->_base)
+        fflush(stdin);
+#else
+    if (stdin->_IO_read_ptr)
+        stdin->_IO_read_ptr = stdin->_IO_buf_end - 1llu;
+#endif
+}
+
+size_t lengthString_f(FILE* in)
+{
+    size_t length = 0llu;
+    if (in == stdin)
+#if __WINDOWS__
+        length = stdin->_cnt;
+#else
+        length = strlen(stdin->_IO_read_base) - 1llu;
+#endif
+    else
+    {
+        fpos_t pos;
+        fgetpos(in, &pos);
+        while (!feof(in))
+        {
+            if (fgetc(in) == '\n')
+                break;
+            length++;
+        }
+        fsetpos(in, &pos);
+    }
+    return length;
+}
+
+char* importString_f(FILE* in, char* str)
+{
+    if (in)
+    {
+        size_t length;
+        if (in == stdin)
+        {
+            printf("string> ");
+            resetStdin();
+            fgetc(in);
+        }
+        length = lengthString_f(in);
+        str = (char*)realloc((void*)str, length + 1llu);
+        str[length] = '\0';
+        if (in == stdin)
+#if __WINDOWS__
+            memcpy(str, in->_base, length);
+#else
+            memcpy(str, in->_IO_read_base, length);
+#endif
+        else
+            fgets(str, length, in);
+        resetStdin();
+    }
+    return str;
+}
+

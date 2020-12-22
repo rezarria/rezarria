@@ -4,9 +4,9 @@
 #define __max_length_of_name 256
 #define defualt_salary 1050000.0L
 // Bi loi o dau do :))))
-typedef struct NODE_S NODE;
-typedef NODE* NODE_P;
-struct NODE_S {
+typedef struct UI64NODE_S UI64NODE;
+typedef UI64NODE* NODE_P;
+struct UI64NODE_S {
 	NODE_P front, back;
 	char name[__max_length_of_name];
 	long double ratio;
@@ -33,7 +33,7 @@ int main()
 
 NODE_P createNODE()
 {
-	NODE_P node = (NODE_P)calloc(1llu, sizeof(NODE));
+	NODE_P node = (NODE_P)calloc(1llu, sizeof(UI64NODE));
 	linkNODE(node, node);
 	return node;
 }

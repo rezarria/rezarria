@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
-#define __WINDOWS__ 1
+#define __WINDOWS__ 0
 typedef struct INFO_STUDENT_S
 {
     char* nameStudent;
