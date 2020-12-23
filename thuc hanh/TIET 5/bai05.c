@@ -59,7 +59,7 @@ uint32_t* importUi32Arr_f(FILE* in, size_t* n)
 
 uint32_t importUI32()
 {
-    return importUI32_f(stdin);
+    return1 importUI32_f(stdin);
 }
 
 uint32_t importUI32_f(FILE* in)
@@ -122,7 +122,5 @@ void displayUi32Arr(uint32_t* arr, size_t n)
 void run(FILE* out, uint32_t* arr, int n)
 {
     for (size_t i = 0llu; i < n; i++)
-    {
-        fprintf(out, "%llu\t%s\t%s\n", i, decToBin(arr[i]), decToHex(arr[i]));
-    }
+        fprintf(out, "%llu\t%s\t%s\n", arr[i], decToBin(arr[i]), decToHex(arr[i]));
 }
