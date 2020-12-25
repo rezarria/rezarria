@@ -361,8 +361,9 @@ void resetStdin()
     if (stdin->_base)
         fflush(stdin);
 #else
-    if (stdin->_IO_read_ptr)
-        stdin->_IO_read_ptr = stdin->_IO_buf_end - 1llu;
+    if (stdin->_IO_buf_base)
+    {
+    }
 #endif
 }
 
@@ -417,3 +418,39 @@ char* importString_f(FILE* in, char* str)
     return str;
 }
 
+typedef struct NODE_S NODE;
+
+struct NODE_S
+{
+    void* node;
+    NODE* next;
+};
+
+NODE* createNODE(size_t size)
+{
+    NODE* node = (NODE*)calloc(1llu, sizeof(NODE));
+    node->node = calloc(1llu, size);
+    return node;
+}
+
+NODE* slectNODE(NODE* node, size_t pos)
+{
+    return pos ? slectNODE(node->next, pos - 1llu) : node;
+}
+
+NODE* lastNODE(NODE* node)
+{
+    return (node->next) ? lastNODE(node->next) : node;
+}
+
+NODE* pushNODE(NODE* node, NODE* last)
+{
+    lastNODE(node)->next = last;
+    return node;
+}
+
+NODE* suftNODE(NODE** node)
+{
+    *node = (*node)->next;
+    return *node;
+}
