@@ -59,7 +59,7 @@ uint32_t* importUi32Arr_f(FILE* in, size_t* n)
 
 uint32_t importUI32()
 {
-    return1 importUI32_f(stdin);
+    return importUI32_f(stdin);
 }
 
 uint32_t importUI32_f(FILE* in)

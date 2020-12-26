@@ -13,7 +13,7 @@ NODE* selectNODE(NODE* node, size_t pos);
 NODE* deleteNODE(NODE* node, size_t pos);
 NODE* displayNODE(NODE* node);
 NODE* insertNODE(NODE* node, size_t pos, NODE* inserter);
-NODE* surtNODE(NODE** node);
+NODE* surfNODE(NODE** node);
 typedef struct  INFO_S INFO;
 INFO* Info(NODE* node);
 INFO* createINFO();
@@ -97,7 +97,7 @@ NODE* deleteNODE(NODE* node, size_t pos)
     return node;
 }
 
-NODE* surtNODE(NODE** node)
+NODE* surfNODE(NODE** node)
 {
     return *node = (*node)->ptr;
 }
@@ -174,7 +174,7 @@ NODE* sortInfoList(NODE* list)
     do
     {
         /* code */
-    } while (surtNODE(&list->ptr));
+    } while (surfNODE(&list->ptr));
     
     return list;
 }

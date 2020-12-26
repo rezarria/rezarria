@@ -1,79 +1,175 @@
-//205748010310003
-//VO TA NAM
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
+#include <stdint.h>
 
-typedef struct PHAN_SO_S
+
+struct NODE_S
 {
-    int32_t tu;
-    int32_t mau;
-} PHAN_SO;
-typedef PHAN_SO* PHAN_SO_P;
+    void* ptr;
+    struct NODE_S* next;
+};
 
-typedef struct TAP_HOP_PHAN_SO_S
+typedef struct NODE_S NODE;
+
+struct PS_S
 {
-    uint64_t n;
-    PHAN_SO_P phanSo;
-} TAP_HOP_PHAN_SO;
+    double tu, mau;
+};
 
-typedef TAP_HOP_PHAN_SO* TAP_HOP_PHAN_SO_P;
+typedef struct PS_S PS;
 
-TAP_HOP_PHAN_SO_P   taoTapHop();
-TAP_HOP_PHAN_SO_P   taoPhanSo(TAP_HOP_PHAN_SO_P tapHop);
-TAP_HOP_PHAN_SO_P   nhapPhanSo(TAP_HOP_PHAN_SO_P tapHop);
-void                hienTapHop(TAP_HOP_PHAN_SO_P tapHop);
-long double         TONG_PHAN_SO(TAP_HOP_PHAN_SO_P tapHop);
+NODE* createNODE();
+NODE* lastNODE(NODE* node);
+NODE* pushNODE(NODE* node, NODE* last);
+NODE* surfNODE(NODE** node);
+NODE* linkPtr(NODE* node, void* ptr);
 
-int main()
+PS* createPS();
+PS* importPS(PS* ps);
+PS* Ps(NODE* node);
+char getChar();
+void displayPS(PS* ps);
+
+NODE* createPSList();
+NODE* displayPSList(NODE* list);
+
+double sumOfPS(NODE* list);
+
+double importDouble();
+double importDouble_f(FILE* input);
+
+void stdClean();
+
+int32_t main()
 {
-    hienTapHop(nhapPhanSo(taoTapHop()));
+    NODE* list;
+    list = createPSList();
+    displayPSList(list);
+    printf("Tong = %llf\n", sumOfPS(list));
     return EXIT_SUCCESS;
 }
 
-TAP_HOP_PHAN_SO_P   taoTapHop()
+void stdClean()
 {
-    TAP_HOP_PHAN_SO_P tapHop = (TAP_HOP_PHAN_SO_P)calloc(1llu, sizeof(TAP_HOP_PHAN_SO));
-    return tapHop;
+    stdin->_base += stdin->_cnt;
+    fflush(stdin);
 }
 
-TAP_HOP_PHAN_SO_P taoPhanSo(TAP_HOP_PHAN_SO_P tapHop)
+double importDouble()
 {
-    printf("Nhap so phan so can nhap : ");
-    scanf("%llu", &tapHop->n);
-    PHAN_SO_P phanSo = (PHAN_SO_P)calloc(tapHop->n, sizeof(PHAN_SO));
-    return phanSo;
+    return importDouble_f(stdin);
 }
 
-TAP_HOP_PHAN_SO_P nhapPhanSo(TAP_HOP_PHAN_SO_P tapHop)
+double importDouble_f(FILE* input)
 {
-    for (uint64_t i = 0llu; i < tapHop->n; i++)
-    {
-        printf("Phan so thu %5llu\n", i);
-        printf("Mau so/t:/t");
-        scanf("%lld", &tapHop->phanSo[i].mau);
-        printf("Tu so\t:\t");
-        scanf("%lld", &tapHop->phanSo[i].tu);
-    }
-    return tapHop;
+    stdClean();
+    double n;
+    scanf("%lf", &n);
+    return n;
 }
 
-void hienTapHop(TAP_HOP_PHAN_SO_P tapHop)
+PS* createPS()
 {
-    printf("\n---------------------------\n");
-    for (uint64_t i = 0llu; i < tapHop->n; i++)
-    {
-        printf("> %lld / %lld\n", tapHop->phanSo[i].mau, tapHop->phanSo[i].tu);
-    }
-    printf("tong cua cac phan so la %llf\n", TONG_PHAN_SO(tapHop));
+    return (PS*)calloc(1llu, sizeof(PS));
 }
 
-long double TONG_PHAN_SO(TAP_HOP_PHAN_SO_P tapHop)
+PS* importPS(PS* ps)
 {
-    uint64_t tren = 0llu, duoi = 1llu;
-    for (uint64_t i = 0llu; i < tapHop->n; i++)
-        duoi *= tapHop->phanSo[i].mau;
-    for (uint64_t i = 0llu; i < tapHop->n; i++)
-        tren += (duoi / tapHop->phanSo[i].mau) * tapHop->phanSo[i].tu;
-    return 1.0L * tren / duoi;
+    printf("-------------------------\n");
+    printf("Tu so\t: ");
+    ps->tu = importDouble();
+    printf("Mau so\t: ");
+    ps->mau = importDouble();
+    printf("-------------------------\n");
+    return ps;
+}
+
+PS* Ps(NODE* node)
+{
+    return (PS*)node->ptr;
+}
+
+char getChar()
+{
+    char c = getchar();
+    stdClean();
+    return c;
+}
+
+NODE* createPSList()
+{
+    NODE* list;
+    char c;
+    printf("Nhap n de tao pha nso moi\n");
+    printf("Nhap '\\' de thoat\n");
+    do
+        switch (c = getChar())
+        {
+        case 'n':
+            list = pushNODE(list, linkPtr(createNODE(), (void*)importPS(createPS())));
+            break;
+        case '\\':
+            printf("Thoat\n\n\n");
+        }
+    while (c != '\\');
+
+    return list;
+}
+
+NODE* displayPSList(NODE* list)
+{
+    do
+        displayPS(Ps(list));
+    while (surfNODE(&list));
+
+}
+
+void displayPS(PS* ps)
+{
+    printf("%2.2lf/%2.2lf\n", ps->tu, ps->mau);
+}
+
+double sumOfPS(NODE* list)
+{
+    double tren = 0.0, duoi = 1.0;
+    NODE* p = list;
+    do
+        duoi *= Ps(p)->mau;
+    while (surfNODE(&p));
+    p = list;
+    do
+        tren += Ps(p)->tu * duoi / Ps(p)->mau;
+    while (surfNODE(&p));
+    return tren / duoi;
+}
+
+NODE* createNODE()
+{
+    return (NODE*)calloc(1llu, sizeof(NODE));
+}
+
+NODE* pushNODE(NODE* node, NODE* last)
+{
+    if (node)
+        lastNODE(node)->next = last;
+    else
+        node = last;
+    return node;
+}
+
+NODE* lastNODE(NODE* node)
+{
+    return node ? (node->next ? lastNODE(node->next) : node) : NULL;
+}
+
+NODE* surfNODE(NODE** node)
+{
+    *node = (*node)->next;
+    return *node;
+}
+
+NODE* linkPtr(NODE* node, void* ptr)
+{
+    node->ptr = ptr;
+    return node;
 }
