@@ -1,3 +1,5 @@
+//205748010310003
+//VO TA NAM
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -43,6 +45,7 @@ typedef struct REPORT_S
     uint64_t n;
     RECORD_P* record;
 } REPORT;
+
 typedef REPORT* REPORT_P;
 
 /*

@@ -1,3 +1,5 @@
+//205748010310003
+//VO TA NAM
 #include<stdio.h>
 #include<stdint.h>
 #include<stdlib.h>
@@ -7,7 +9,7 @@
 /*
 	struct TIME bao gồm 3 biến uint64_t hour, minute, second
 	coi struct này là thời gian có giờ phút giây số nguyên
-	
+
 	struct MGR bao gồm 2 biến uint64_t n và TIME_P *time
 	coi struct này là cặp tài liệu vì TIME được lưu dưới dạng danh sách địa chỉ (TIME**) chứa không phải một mảng thống nhất liên tục
 */
@@ -69,7 +71,7 @@ TIME_P createTime(uint64_t hour, uint64_t minute, uint64_t second)
 	time->hour = hour;
 	time->minute = minute;
 	time->second = second;
-	fixTime(time);
+	//fixTime(time);
 	return time;
 }
 
@@ -90,7 +92,7 @@ void fixTime(TIME_P time)
 MGR_P createTimeInMgr(MGR_P mgr)
 {
 	printf("Nhap so thoi gian can nhap : ");
-	scanf_s("%llu", &mgr->n);
+	scanf("%llu", &mgr->n);
 	mgr->time = (TIME_P*)calloc(mgr->n, sizeof(TIME_P));
 	return mgr;
 }
@@ -102,11 +104,20 @@ MGR_P importMgr(MGR_P mgr)
 	{
 		printf("Nhap thoi gian thu %llu\n", i);
 		printf("Gio\t:\t");
-		scanf_s("%llu", &hour);
-		printf("Phut\t:\t");
-		scanf_s("%llu", &minute);
-		printf("Giay\t:\t");
-		scanf_s("%llu", &second);
+		scanf("%llu", &hour);
+		do
+		{
+			printf("Phut\t:\t");
+			scanf("%llu", &minute);
+		} while (stdin->_base[0] == '-' || minute > 59llu);
+
+		do
+		{
+			printf("Giay\t:\t");
+			scanf("%llu", &second);
+		} while (stdin->_base[0] == '-' || second > 59llu);
+
+
 		mgr->time[i] = createTime(hour, minute, second);
 	}
 	return mgr;

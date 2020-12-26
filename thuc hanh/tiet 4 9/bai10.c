@@ -1,9 +1,11 @@
+//205748010310003
+//VO TA NAM
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#define __WINDOWS__ 0
+#define __WINDOWS__ 1
 
 typedef struct NODE_S NODE;
 

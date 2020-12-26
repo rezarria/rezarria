@@ -27,9 +27,12 @@ bool isMaxI32(int32_t a, int32_t b)
     return a > b;
 }
 
-bool isMinI32(int32_t a, int32_t b)
+char* importString_f(FILE* in, char* str)
 {
-    return b < a;
+    if (in == stdin)
+        printf("string> ");
+    fgets(str, 256llu, in);
+    return (char*)realloc((void*)str, strlen(str) + 1llu);
 }
 
 int32_t importI32()
@@ -362,32 +365,13 @@ void resetStdin()
         fflush(stdin);
 #else
     if (stdin->_IO_buf_base)
-        stdin->_IO_read_ptr = stdin->_IO_read_end;
-#endif
-}
-
-size_t lengthString_f(FILE* in)
-{
-    size_t length = 0llu;
-    if (in == stdin)
-#if __WINDOWS__
-        length = stdin->_cnt;
-#else
-        length = strlen(stdin->_IO_read_base) - 1llu;
-#endif
-    else
     {
-        fpos_t pos;
-        fgetpos(in, &pos);
-        while (!feof(in))
-        {
-            if (fgetc(in) == '\n')
-                break;
-            length++;
-        }
-        fsetpos(in, &pos);
+        stdin->_IO_read_ptr = stdin->_IO_buf_end;
+        stdin->_IO_write_ptr = stdin->_IO_buf_end;
+        stdin->_IO_read_end = stdin->_IO_buf_end;
+        stdin->_IO_write_end = stdin->_IO_buf_end;
     }
-    return length;
+#endif
 }
 
 char* importString_f(FILE* in, char* str)
@@ -401,7 +385,7 @@ char* importString_f(FILE* in, char* str)
             resetStdin();
             fgetc(in);
         }
-        length = lengthString_f(in);
+        length = lengthString_f(in, '\n');
         str = (char*)realloc((void*)str, length + 1llu);
         str[length] = '\0';
         if (in == stdin)

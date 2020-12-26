@@ -1,3 +1,5 @@
+//205748010310003
+//VO TA NAM
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -14,6 +16,7 @@ typedef struct TAP_HOP_PHAN_SO_S
     uint64_t n;
     PHAN_SO_P phanSo;
 } TAP_HOP_PHAN_SO;
+
 typedef TAP_HOP_PHAN_SO* TAP_HOP_PHAN_SO_P;
 
 TAP_HOP_PHAN_SO_P   taoTapHop();
@@ -62,14 +65,15 @@ void hienTapHop(TAP_HOP_PHAN_SO_P tapHop)
     {
         printf("> %lld / %lld\n", tapHop->phanSo[i].mau, tapHop->phanSo[i].tu);
     }
+    printf("tong cua cac phan so la %llf\n", TONG_PHAN_SO(tapHop));
 }
 
 long double TONG_PHAN_SO(TAP_HOP_PHAN_SO_P tapHop)
 {
-    uint64_t tren = 0llu, duoi = 0llu;
+    uint64_t tren = 0llu, duoi = 1llu;
     for (uint64_t i = 0llu; i < tapHop->n; i++)
-        duoi *= tapHop->phanSo[i].tu;
+        duoi *= tapHop->phanSo[i].mau;
     for (uint64_t i = 0llu; i < tapHop->n; i++)
-        tren += (duoi / tapHop->phanSo[i].tu) * tapHop->phanSo[i].mau;
+        tren += (duoi / tapHop->phanSo[i].mau) * tapHop->phanSo[i].tu;
     return 1.0L * tren / duoi;
 }

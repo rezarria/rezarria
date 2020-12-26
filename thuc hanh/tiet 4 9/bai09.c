@@ -1,3 +1,4 @@
+#define __WINDOWS__ 0
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -12,17 +13,22 @@ NODE* selectNODE(NODE* node, size_t pos);
 NODE* deleteNODE(NODE* node, size_t pos);
 NODE* displayNODE(NODE* node);
 NODE* insertNODE(NODE* node, size_t pos, NODE* inserter);
-
+NODE* surtNODE(NODE** node);
 typedef struct  INFO_S INFO;
 INFO* Info(NODE* node);
 INFO* createINFO();
 INFO* importINFO(INFO* info);
 INFO* displayINFO(INFO* info);
 
+
+NODE* importInfoMenu();
 NODE* displayINFOList(NODE* node);
+NODE* sortInfoList(NODE* list);
 
 char* importString();
 char* importString_f(FILE* in, char* str);
+char importChar_f(FILE* in);
+char importChar();
 size_t lengthString_f(FILE* in, char end);
 void resetStdin();
 
@@ -43,12 +49,9 @@ struct INFO_S
     size_t ageStudent;
 };
 
-
 int32_t main()
 {
-    NODE* node = createNODE(sizeof(INFO));
-    importINFO(Info(node));
-    displayINFO(Info(node));
+    NODE* list = importInfoMenu();
     return EXIT_SUCCESS;
 }
 
@@ -66,7 +69,10 @@ NODE* lastNODE(NODE* node)
 
 NODE* pushNODE(NODE* node, NODE* last)
 {
-    lastNODE(node)->next = last;
+    if (node)
+        lastNODE(node)->next = last;
+    else
+        node = last;
     return node;
 }
 
@@ -91,34 +97,9 @@ NODE* deleteNODE(NODE* node, size_t pos)
     return node;
 }
 
-NODE* displayNODE(NODE* node)
+NODE* surtNODE(NODE** node)
 {
-    if (node)
-    {
-        printf("0x%x016\t0x%x016\n", node, node->ptr);
-        displayNODE(node->next);
-    }
-    return node;
-}
-
-NODE* insertNODE(NODE* node, size_t pos, NODE* inserter)
-{
-    if (pos)
-    {
-        NODE* t = selectNODE(node, pos - 1llu);
-        if (t)
-            inserter->next = t->next;
-        else
-            t = selectNODE(node, pos - 2llu);
-        if (t)
-            t->next = inserter;
-    }
-    else
-    {
-        inserter->next = node;
-        node = inserter;
-    }
-    return node;
+    return *node = (*node)->ptr;
 }
 
 INFO* Info(NODE* node)
@@ -133,23 +114,49 @@ INFO* createINFO()
 
 INFO* importINFO(INFO* info)
 {
+    printf("Ho va ten\n");
     info->nameStudent = importString();
+    printf("Gioi tinh\n");
     info->sexStudent = importString();
+    printf("Lop\n");
     info->classStudent = importString();
+    printf("Tuoi\n");
     info->ageStudent = importUI64();
     return info;
 }
 
 INFO* displayINFO(INFO* info)
 {
-    printf("%s\n", info->nameStudent);
-    printf("%s\n", info->sexStudent);
-    printf("%s\n", info->classStudent);
-    printf("%llu\n", info->ageStudent);
+    printf("%-20s\t%5s%5s%3llu\n", info->nameStudent, info->sexStudent, info->classStudent, info->ageStudent);
     return info;
 }
 
+NODE* importInfoMenu()
+{
+    NODE* node;
+    char c;
+    printf("> Nhap 'n' de tao thong tin moi\n");
+    printf("> Nhap '\\' de thoat\n");
+    do
 
+        switch (c = importChar())
+        {
+        case 'n':
+        {
+            printf("--------------------------------\n");
+            NODE* p = createNODE(sizeof(INFO));
+            p->ptr = (void*)importINFO(createINFO());
+            node = pushNODE(node, p);
+            printf("--------------------------------\n");
+            printf("Nhap lenh\n");
+            break;
+        }
+        case '\\':
+            printf("Thoat\n");
+        }
+    while (c != '\\');
+    return node;
+}
 
 NODE* displayINFOList(NODE* node)
 {
@@ -162,7 +169,15 @@ NODE* displayINFOList(NODE* node)
     return node;
 }
 
-
+NODE* sortInfoList(NODE* list)
+{
+    do
+    {
+        /* code */
+    } while (surtNODE(&list->ptr));
+    
+    return list;
+}
 
 void resetStdin()
 {
@@ -172,15 +187,10 @@ void resetStdin()
 #else
     if (stdin->_IO_buf_base)
     {
-        free(stdin->_IO_buf_base);
-        stdin->_IO_buf_base = NULL;
-        stdin->_IO_buf_end = NULL;
-        stdin->_IO_read_base = NULL;
-        stdin->_IO_write_base = NULL;
-        stdin->_IO_read_ptr = NULL;
-        stdin->_IO_write_ptr = NULL;
-        stdin->_IO_read_end = NULL;
-        stdin->_IO_write_end = NULL;
+        stdin->_IO_read_ptr = stdin->_IO_buf_end;
+        stdin->_IO_write_ptr = stdin->_IO_buf_end;
+        stdin->_IO_read_end = stdin->_IO_buf_end;
+        stdin->_IO_write_end = stdin->_IO_buf_end;
     }
 #endif
 }
@@ -241,4 +251,19 @@ uint64_t importUI64_f(FILE* in)
         printf("uint64> ");
     fscanf(in, "%llu", &n);
     return n;
+}
+
+char importChar()
+{
+    return importChar_f(stdin);
+}
+
+char importChar_f(FILE* in)
+{
+    if (in == stdin)
+        printf("char> ");
+    resetStdin();
+    char c = fgetc(stdin);
+    resetStdin();
+    return c;
 }

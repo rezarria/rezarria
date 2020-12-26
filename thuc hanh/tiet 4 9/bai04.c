@@ -1,11 +1,13 @@
+//205748010310003
+//VO TA NAM
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 
 typedef struct COMPLEX_S
 {
-    long double real;
-    long double virtual;
+    long double thuc;
+    long double ao;
 } COMPLEX;
 typedef COMPLEX* COMPLEX_P;
 
@@ -20,9 +22,9 @@ MGR_P   taoMgr();
 MGR_P   taoComplex(MGR_P mgr);
 MGR_P   nhapComplex(MGR_P mgr);
 void    hienMgr(MGR_P mgr);
+void hienComplex(COMPLEX_P complex);
 
-
-int main()
+int32_t main()
 {
     hienMgr(nhapComplex(taoComplex(taoMgr())));
     return EXIT_SUCCESS;
@@ -49,9 +51,9 @@ MGR_P nhapComplex(MGR_P mgr)
     {
         printf("So phu thu %llu\n", i);
         printf("Phan thuc\t:\t");
-        scanf("%llf", &mgr->complex[i].real);
+        scanf("%llf", &mgr->complex[i].thuc);
         printf("Nhap phan ao\t:\t");
-        scanf("%llf", &mgr->complex[i].virtual);
+        scanf("%llf", &mgr->complex[i].ao);
     }
     return mgr;
 }
@@ -60,6 +62,16 @@ void hienMgr(MGR_P mgr)
 {
     printf("\n--------------------------\n");
     for (uint64_t i = 0llu; i < mgr->n; i++)
-        printf("So phu thu %llu/t:/t%6.3llf + i * %6.3llf\n", i, mgr->complex[i].real, mgr->complex[i].virtual);
+        hienComplex(&mgr->complex[i]);
 }
 
+void hienComplex(COMPLEX_P complex)
+{
+    if (complex->ao == 0.0L)
+        printf("%6.3llf\n", complex->thuc);
+    else
+        if (complex->thuc == 0.0L)
+            printf("%6.3llfi\n", complex->ao);
+        else
+            printf("%6.3llf + %6.3llfi\n", complex->thuc, complex->ao);
+}
