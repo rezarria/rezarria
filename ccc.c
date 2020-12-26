@@ -362,8 +362,7 @@ void resetStdin()
         fflush(stdin);
 #else
     if (stdin->_IO_buf_base)
-    {
-    }
+        stdin->_IO_read_ptr = stdin->_IO_read_end;
 #endif
 }
 
@@ -426,21 +425,22 @@ struct NODE_S
     NODE* next;
 };
 
+struct NODE_S
+{
+    void* ptr;
+    NODE* next;
+};
+
 NODE* createNODE(size_t size)
 {
     NODE* node = (NODE*)calloc(1llu, sizeof(NODE));
-    node->node = calloc(1llu, size);
+    node->ptr = calloc(1llu, size);
     return node;
-}
-
-NODE* slectNODE(NODE* node, size_t pos)
-{
-    return pos ? slectNODE(node->next, pos - 1llu) : node;
 }
 
 NODE* lastNODE(NODE* node)
 {
-    return (node->next) ? lastNODE(node->next) : node;
+    return node->next ? lastNODE(node->next) : node;
 }
 
 NODE* pushNODE(NODE* node, NODE* last)
@@ -449,8 +449,53 @@ NODE* pushNODE(NODE* node, NODE* last)
     return node;
 }
 
-NODE* suftNODE(NODE** node)
+NODE* selectNODE(NODE* node, size_t pos)
 {
-    *node = (*node)->next;
-    return *node;
+    return pos ? (pos || node->next ? selectNODE(node->next, pos - 1llu) : NULL) : node;
+}
+
+NODE* deleteNODE(NODE* node, size_t pos)
+{
+    if (node)
+    {
+        NODE* p = pos ? selectNODE(node, pos - 1llu) : node->next;
+        NODE* d = pos ? p->next : node;
+        if (pos)
+            p->next = d->next;
+        else
+            node = p;
+        free(d->ptr);
+        free(d);
+    }
+    return node;
+}
+
+NODE* displayNODE(NODE* node)
+{
+    if (node)
+    {
+        printf("0x%x016\t0x%x016\n", node, node->ptr);
+        displayNODE(node->next);
+    }
+    return node;
+}
+
+NODE* insertNODE(NODE* node, size_t pos, NODE* inserter)
+{
+    if (pos)
+    {
+        NODE* t = selectNODE(node, pos - 1llu);
+        if (t)
+            inserter->next = t->next;
+        else
+            t = selectNODE(node, pos - 2llu);
+        if (t)
+            t->next = inserter;
+    }
+    else
+    {
+        inserter->next = node;
+        node = inserter;
+    }
+    return node;
 }
