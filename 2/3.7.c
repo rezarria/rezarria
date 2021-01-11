@@ -21,6 +21,7 @@ void GhiVaoTep(FILE* file, const char type, size_t size, ...)
     format[1] = type;
     for (; 0ull < size; size--)
         fscanf(file, format, va_arg(argv, size_t));
+    va_end(argv);
 }
 
 void thongBao(char* argc, ...)
@@ -30,5 +31,5 @@ void thongBao(char* argc, ...)
     do
         printf("%c : %f\n", *argc, (float)va_arg(argv, double));
     while (*(++argc));
-
+    va_end(argv);
 }

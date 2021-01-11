@@ -25,6 +25,7 @@ void GhiVaoBien(char type, char* size, ...)
         printf("%c : ", *size);
         scanf(format, va_arg(argv, size_t));
     } while (*(++size));
+    va_end(argv);
 }
 
 void GhiVaoTep(FILE* file, size_t size, ...)
@@ -33,4 +34,5 @@ void GhiVaoTep(FILE* file, size_t size, ...)
     va_start(argv, size);
     for (; 0ull < size; size--)
         fprintf(file, "%d ", va_arg(argv, int));
+    va_end(argv);
 }
