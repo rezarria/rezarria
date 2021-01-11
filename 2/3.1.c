@@ -21,7 +21,7 @@ int main()
 
 void nhapHoSo(HOSO hoso[], int n)
 {
-    void* i = (void*)&hoso[n];
+    HOSO* i = &hoso[n];
     for (; hoso < i; hoso++)
     {
         printf("----------------------------------------------------------------------\n");
@@ -39,7 +39,7 @@ void nhapHoSo(HOSO hoso[], int n)
 
 void inHoSo(HOSO hoso[], int n)
 {
-    void* i = (void*)&hoso[n];
+    HOSO* i = &hoso[n];
     printf("----------------------------------------------------------------------\n");
     printf("| %-30s | %-15s | %-15s |\n", "Ho va ten", "Ma sinh vien", "Diem trung binh");
     printf("----------------------------------------------------------------------\n");

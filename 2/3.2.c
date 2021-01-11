@@ -21,29 +21,27 @@ int main()
 
 void nhapHoSo(HOSO hoso[], int n)
 {
-    int i;
-    HOSO* p;
-    for (p = &hoso[i = 0]; i < n; p = &hoso[++i])
+    HOSO* i = &hoso[n];
+    for (;hoso < i; hoso++)
     {
         printf("----------------------------------------------------------------------\n");
         printf("%-20s : ", "Ho va ten");
         fflush(stdin);
-        gets(p->ten);
+        gets(hoso->ten);
         printf("%-20s : ", "He so luong");
-        scanf("%f", &p->heSoLuong);
-        p->luongThuc = p->heSoLuong * 1210000.0f;
+        scanf("%f", &hoso->heSoLuong);
+        hoso->luongThuc = hoso->heSoLuong * 1210000.0f;
     }
     printf("----------------------------------------------------------------------\n");
 }
 
 void inHoSo(HOSO hoso[], int n)
 {
-    int i;
-    HOSO* p;
+    HOSO* i = &hoso[n];
     printf("----------------------------------------------------------------------\n");
     printf("| %-30s | %-15s | %-15s |\n", "Ho va ten", "He so luong", "Luong thuc");
     printf("----------------------------------------------------------------------\n");
-    for (p = &hoso[i = 0]; i < n; p = &hoso[++i])
-        printf("| %-30s | %-15.2f | %-15.2f |\n", p->ten, p->heSoLuong, p->luongThuc);
+    for (;hoso < i; hoso++)
+        printf("| %-30s | %-15.2f | %-15.2f |\n", hoso->ten, hoso->heSoLuong, hoso->luongThuc);
     printf("----------------------------------------------------------------------\n");
 }
