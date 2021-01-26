@@ -1,45 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-int *MaTran(int m, int n)
+char *intTOBin(int n)
 {
-    return (int *)calloc(m * n, sizeof(int));
+    char *bin = (char *)malloc(33ull);
+    bin[32] = '\0';
+    unsigned int *o = (unsigned int *)&n;
+    for (char i = 31; i != EOF; i--, *o /= 2u)
+        bin[i] = '0' + *o % 2u;
+    return bin;
 }
 
-int *nhapMaTran(int *mt, int m, int n)
+int binToInt(char *bin)
 {
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-        {
-            printf("0x%08x %d %d : ", (void *)(mt + n * m * i + n * j), i, j);
-            scanf("%d", &mt[n * m * i + n * j]);
-        }
-    return mt;
-}
-
-void hienMaTran(int *mt, int m, int n)
-{
-    for (int i = 0; i < m; i++)
+    int i = -1;
+    int step = 1;
+    while (*bin)
     {
-        for (int j = 0; j < n; j++)
-            printf("%d\t", mt[n * m * i + n * j]);
-        putchar('\n');
+        if (!(*bin - '0'))
+            i -= step;
+        step <<= 1;
+        bin++;
     }
+    return i;
 }
 
-int *congMaTran(int *a, int *b, int m, int n)
+int main(int argc, char **argv)
 {
-    int *mt = MaTran(m, n);
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            mt[n * (m * j + i)] = a[n * (m * j + i)] + b[n * (m * j + i)];
-    perror("congMaTran");
-    return mt;
-}
-
-int main()
-{
-    int *a = nhapMaTran(MaTran(3, 3), 3, 3);
-    hienMaTran(congMaTran(a, a, 3, 3), 3, 3);
+    int n = 1;
+    for (int i = 0; i < 32; i++)
+    {
+        printf("%s %d\n", intTOBin(n), n);
+        printf("%d\n", binToInt(intTOBin(n)));
+        n <<= 1;
+    }
     return 0;
 }
