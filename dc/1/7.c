@@ -4,6 +4,8 @@
 
 bool hoanThien(unsigned int n)
 {
+    if(n == 1)
+        return false;
     unsigned int t = 1;
     unsigned int moc = sqrt(n);
     for (; moc > 1; moc--)
