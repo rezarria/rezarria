@@ -7,11 +7,9 @@ char *nhiPhan(unsigned int n)
     size_t size = log(n) / log(2);
     char *bin = (char *)calloc(size + 2, 1ull);
     char *c = bin + size;
-    while (n)
-    {
+    do
         *(c--) = '0' + n % 2;
-        n /= 2;
-    }
+    while (n /= 2);
     return bin;
 }
 
