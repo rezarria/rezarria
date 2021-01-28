@@ -18,6 +18,6 @@ int main()
     unsigned int n;
     printf("Nhap n : ");
     scanf("%u", &n);
-    printf("-> %s", nhiPhan(n));
+    printf("-> %s\n", nhiPhan(n));
     return 0;
 }
