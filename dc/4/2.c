@@ -41,6 +41,15 @@ NODE *surft(NODE **node)
     return *node;
 }
 
+void freeNODE(NODE *node)
+{
+    if (node)
+    {
+        freeNODE(node->next);
+        free(node);
+    }
+}
+
 int tongDuongChan(NODE *node)
 {
     int t = 0;
@@ -57,5 +66,6 @@ int main()
     FILE *f = fopen("output.txt", "w");
     fprintf(f, "%d", tongDuongChan(node));
     fclose(f);
+    freeNODE(node);
     return 0;
 }
