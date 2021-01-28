@@ -13,23 +13,17 @@ bool isPrime(unsigned int n)
         break;
     case 2:
         kq = true;
-        break;
     default:
         if (n % 2)
         {
-            for (unsigned int i = sqrt(n); i > 3; i++)
+            for (unsigned int i = sqrt(n); i > 2; i--)
                 if (!(n % i))
-                {
-                    kq = false;
                     break;
-                }
+            kq = true;
         }
         else
-        {
-        }
-        break;
+            break;
     }
-    return kq;
 }
 
 int main()
