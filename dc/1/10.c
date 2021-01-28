@@ -2,9 +2,7 @@
 
 unsigned int tongSo(unsigned int n)
 {
-    unsigned t = 0u;
-    
-    return t;
+    return n ? n % 10 + tongSo(n / 10) : 0;
 }
 
 int main()
