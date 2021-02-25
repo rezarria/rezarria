@@ -17,6 +17,6 @@ int main()
     int n;
     std::cout << "n : ";
     std::cin >> n;
-    std::cout << "> " << reverse(n);
+    std::cout << "> " << reverse(n) << std::endl;
     return 0;
 }
