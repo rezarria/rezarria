@@ -35,7 +35,7 @@ Complex::Complex()
     a = b = 0.0;
 }
 
-void Complex::input()
+inline void Complex::input()
 {
     std::cout << "thuc = ";
     std::cin >> a;
@@ -43,12 +43,18 @@ void Complex::input()
     std::cin >> b;
 }
 
-void Complex::output()
+inline void Complex::output()
 {
-    std::cout << a << "+i*" << b;
+    std::cout << a;
+    if (b > 0)
+        std::cout << "+";
+    if (b < 0)
+        std::cout << "-";
+    if (b != 0)
+        std::cout << b << "*i";
 }
 
-Complex operator-(Complex &a, Complex &b)
+inline Complex operator-(Complex &a, Complex &b)
 {
     Complex t;
     t.a = a.a - b.a;
@@ -56,7 +62,7 @@ Complex operator-(Complex &a, Complex &b)
     return t;
 }
 
-Complex operator+(Complex &a, Complex &b)
+inline Complex operator+(Complex &a, Complex &b)
 {
     Complex t;
     t.a = a.a + b.a;

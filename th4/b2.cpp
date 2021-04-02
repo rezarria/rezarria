@@ -53,7 +53,7 @@ void Mydate::output()
 
 bool operator>=(Mydate const &a, Mydate const &b)
 {
-    return ((a.year * 12 + a.month) * 30 + a.day) >= ((b.year * 12 + b.month) * 30 + b.day);
+    return a.year * 365 + a.month * 30 + a.day >= b.year * 365 + b.month * 30 + b.day;
 }
 
 bool Mydate__cmp(const Mydate &a, const Mydate &b)
