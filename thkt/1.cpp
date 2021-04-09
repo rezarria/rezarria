@@ -6,7 +6,7 @@ using namespace std;
 
 class Mytime
 {
-protected:
+private:
     int gio, phut, giay;
 
 public:
@@ -16,8 +16,10 @@ public:
 
 class MyDateTime : public Mytime
 {
+private:
+    int ngay, thang, nam
 public:
-    MyDateTime(int ngay = 0, int thang = 0, int nam = 0);
+    MyDateTime(int ngay = 0, int thang = 0, int nam = 0, int gio = 0, int phut = 0, int giay = 0);
     void nhap(), hien();
 };
 
@@ -60,8 +62,11 @@ void Mytime::hien()
     cout << setfill('0') << setw(2) << gio << " : " << phut << " : " << giay << endl;
 }
 
-MyDateTime::MyDateTime(int ngay, int thang, int nam) : MyDateTime::Mytime(ngay, thang, nam)
+MyDateTime::MyDateTime(int ngay, int thang, int nam, int gio, int phut, int giay) : MyDateTime::Mytime(gio, phut, giay)
 {
+    this->ngay = ngay;
+    this->thang = thang;
+    this->nam = nam;
 }
 
 void MyDateTime::nhap()
@@ -69,17 +74,22 @@ void MyDateTime::nhap()
     cout << endl
          << "++++++++++++++++++++++++" << endl;
     cout << "Ngay : ";
-    cin >> gio;
+    cin >> ngay;
     cout << "Thang : ";
-    cin >> phut;
+    cin >> thang;
     cout << "Nam : ";
-    cin >> giay;
+    cin >> nam;
+    Mytime::nhap();
     cout << "++++++++++++++++++++++++" << endl;
 }
 
 void MyDateTime::hien()
 {
-    cout << setfill('0') << setw(2) << gio;
-    cout << "-" << setw(2) << phut;
-    cout << "-" << setw(4) << giay << endl;
+    cout << endl
+         <<"++++++++++++++++++++++++" << endl;
+    cout << setfill('0') << setw(2) << ngay;
+    cout << "-" << setw(2) << thang;
+    cout << "-" << setw(4) << nam << endl;
+    Mytime::hien();
+    cout << "++++++++++++++++++++++++" << endl;
 }
