@@ -9,14 +9,14 @@ int main(int argc, char **argv)
 		for(; argv[1][i] && isdigit(argv[1][i]); ++i);
 		if(!argv[1][i])
 		{
-			const unsigned int k = atoi(argv[1]) - 65;
+			const unsigned int k = atoi(argv[1]) - 'A';
             		char str[255];
 			printf("plaintext:  ");
-			fgets(str, 255, stdin);
+			fgets(str,255,stdin);
             		printf("ciphertext: ");
-			for(i = 0; str[i] ; ++i)
+			for(i=0; str[i]; ++i)
 				putchar(isalpha(str[i])
-					?(((str[i]<'a')?'A':'a')+(toupper(str[i])+k)%26)
+					?(((str[i]<'a')?'A':'a') + (toupper(str[i]) + k) % 26)
 					:str[i]
 				       );
 			return 0;
