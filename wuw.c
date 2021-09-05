@@ -23,5 +23,5 @@ int main(int argc, char **argv)
 		}
 	}
 	printf("Usage: %s key\n", argv[0]);
-	return 0;
+	return 1;
 }
