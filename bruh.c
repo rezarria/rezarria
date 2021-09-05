@@ -41,6 +41,7 @@ int main(int k, string kv[]) //int or string kv
 	for (int i = 0, n = strlen(plaintext); i < n; i++)
 	{
 		if (isalpha(plaintext[i])) // Trừ dấu ra
+		{
 			if (islower(plaintext[i]))
 			{
 				plaintext[i] = plaintext[i] - 'a';
@@ -53,6 +54,7 @@ int main(int k, string kv[]) //int or string kv
 				plaintext[i] = ascii[(plaintext[i] + argv) % 26];
 				//plaintext[i] = plaintext[i] + '65'; // Vốn là chữ Hoa, không cần lên
 			}
+		}
 		printf("%c", plaintext[i]);
 	}
 	return 0;
