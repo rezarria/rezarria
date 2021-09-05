@@ -36,8 +36,6 @@ int main(int k, string kv[]) //int or string kv
 
 	string plaintext = get_string("plaintext:");
 
-	printf("%s\n", plaintext);
-
 	for (int i = 0, n = strlen(plaintext); i < n; i++)
 	{
 		if (isalpha(plaintext[i])) // Trừ dấu ra
