@@ -26,13 +26,9 @@ int main(int argc, string argv[]) //int or string kv
             /*
             nếu i và j chạy hết vòng thử và không có trùng kí tự
             thì j == length và i == length - 1
-            tức j và i không bằng nhau
-            có 2 điều kiện có thể dùng
-            i != j
-            hoặc
-            i + 1 == j (hoặc i == j - 1)
+            tức i + 1 == j
         */
-            if (j != i)
+            if (j == i + 1)
             {
                 char *str = get_string("plaintext:  ");
 
