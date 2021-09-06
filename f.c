@@ -52,7 +52,7 @@ int main(int argc, string argv[]) //int or string kv
             }
         }
 
-        // Xảy ra khi không phát hiện trùng
+        // Xảy ra khi phát hiện trùng
         printf("Key must contain 26 characters.\n");
         return 1;
     }
