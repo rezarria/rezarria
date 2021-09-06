@@ -29,7 +29,7 @@ int main(int argc, string argv[]) //int or string kv
             hoặc
             i + 1 == j (hoặc i == j - 1)
         */
-        if (j != j)
+        if (j != i)
         {
             char *str = get_string("plaintext:  ");
 
