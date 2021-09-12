@@ -2,13 +2,13 @@
 
 size_t miniumBracketAdd(char* str)
 {
-	size_t count = 0;
-	for(;*str;str++)
-		if(str[0] == '{' && str[1] == '}')
-			str++;
-		else
-			count++;
-	return count;
+	if(!str[0])
+		return 0;
+
+	if(str[0] == '{' && str[1] =='}')
+		return 0 +  miniumBracketAdd(str + 2);
+	else
+		return 1 + miniumBracketAdd(str + 1);
 }
 
 int main(int argc, char **argv)
